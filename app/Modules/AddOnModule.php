@@ -368,6 +368,14 @@ class AddOnModule
                 'purchase_url' => $purchaseUrl,
                 'category'     => 'crm'
             ),
+            'googlecontact'      => array(
+                'title'        => 'Google Contact',
+                'description'  => 'Add Fluent Forms Submission to Google Contacts when a form is submitted.',
+                'logo'         => App::publicUrl('img/integrations/googlecontact.png'),
+                'enabled'      => 'no',
+                'purchase_url' => $purchaseUrl,
+                'category'     => 'crm'
+            ),
         );
     }
 }
