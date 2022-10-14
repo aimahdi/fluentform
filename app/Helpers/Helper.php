@@ -84,18 +84,17 @@ class Helper
         return json_last_error() === JSON_ERROR_NONE;
     }
 
-
     public static function isSlackEnabled()
     {
         $globalModules = get_option('fluentform_global_modules_status');
-        return $globalModules && isset($globalModules['slack']) && $globalModules['slack'] == 'yes';
+        return $globalModules && isset($globalModules['slack']) && 'yes' == $globalModules['slack'];
     }
 
     public static function getEntryStatuses($form_id = false)
     {
         $statuses = apply_filters('fluentform_entry_statuses_core', [
             'unread' => 'Unread',
-            'read'   => 'Read'
+            'read'   => 'Read',
         ], $form_id);
         $statuses['trashed'] = 'Trashed';
         return $statuses;
@@ -110,14 +109,14 @@ class Helper
             'ratings',
             'net_promoter',
             'select_country',
-            'net_promoter_score'
+            'net_promoter_score',
         ]);
     }
 
     public static function getSubFieldReportableInputs()
     {
         return apply_filters('fluentform_subfield_reportable_inputs', [
-            'tabular_grid'
+            'tabular_grid',
         ]);
     }
 
@@ -158,14 +157,14 @@ class Helper
                 ->insert([
                     'meta_key' => $metaKey,
                     'form_id'  => $formId,
-                    'value'    => $value
+                    'value'    => $value,
                 ]);
             return $insetid;
         } else {
             wpFluent()->table('fluentform_form_meta')
                 ->where('id', $meta->id)
                 ->update([
-                    'value' => $value
+                    'value' => $value,
                 ]);
         }
 
@@ -201,7 +200,7 @@ class Helper
                 ->where('id', $meta->id)
                 ->insert([
                     'value'      => $value,
-                    'updated_at' => current_time('mysql')
+                    'updated_at' => current_time('mysql'),
                 ]);
             return $meta->id;
         }
@@ -221,7 +220,7 @@ class Helper
                 'meta_key'    => $metaKey,
                 'value'       => $value,
                 'created_at'  => current_time('mysql'),
-                'updated_at'  => current_time('mysql')
+                'updated_at'  => current_time('mysql'),
             ]);
     }
 
@@ -262,7 +261,6 @@ class Helper
             return '';
         }
 
-
         if ($formSettings && $extraClass = ArrayHelper::get($formSettings, 'form_extra_css_class')) {
             return esc_attr($extraClass);
         }
@@ -300,12 +298,14 @@ class Helper
             'fluent_forms_add_ons',
             'fluent_forms_docs',
             'fluent_forms_payment_entries',
-            'fluent_forms_smtp'
+            'fluent_forms_smtp',
         ];
 
         $status = true;
 
-        if (!isset($_GET['page']) || !in_array($_GET['page'], $fluentPages)) {
+        $page = wpFluentForm('request')->get('page');
+
+        if (!$page || !in_array($page, $fluentPages)) {
             $status = false;
         }
 
@@ -343,7 +343,7 @@ class Helper
 
     public static function isTabIndexEnabled()
     {
-        if (static::$tabIndexStatus == 'na') {
+        if ('na' == static::$tabIndexStatus) {
             $globalSettings = get_option('_fluentform_global_form_settings');
             static::$tabIndexStatus = ArrayHelper::get($globalSettings, 'misc.tabIndex') == 'yes';
         }
@@ -380,7 +380,7 @@ class Helper
                     ->first();
                 if ($exist) {
                     return [
-                        'unique' => ArrayHelper::get($field, 'raw.settings.unique_validation_message')
+                        'unique' => ArrayHelper::get($field, 'raw.settings.unique_validation_message'),
                     ];
                 }
             }
@@ -391,52 +391,52 @@ class Helper
 
     public static function getNumericFormatters()
     {
-        return apply_filters('fluentform_numeric_styles', array(
-            'none'                 => array(
+        return apply_filters('fluentform_numeric_styles', [
+            'none'                 => [
                 'value' => '',
-                'label' => 'None'
-            ),
-            'comma_dot_style'      => array(
+                'label' => 'None',
+            ],
+            'comma_dot_style'      => [
                 'value'    => 'comma_dot_style',
                 'label'    => __('US Style with Decimal (EX: 123,456.00)', 'fluentform'),
                 'settings' => [
                     'decimal'   => '.',
                     'separator' => ',',
                     'precision' => 2,
-                    'symbol'    => ''
-                ]
-            ),
-            'dot_comma_style_zero' => array(
+                    'symbol'    => '',
+                ],
+            ],
+            'dot_comma_style_zero' => [
                 'value'    => 'dot_comma_style_zero',
                 'label'    => __('US Style without Decimal (Ex: 123,456,789)', 'fluentform'),
                 'settings' => [
                     'decimal'   => '.',
                     'separator' => ',',
                     'precision' => 0,
-                    'symbol'    => ''
-                ]
-            ),
-            'dot_comma_style'      => array(
+                    'symbol'    => '',
+                ],
+            ],
+            'dot_comma_style'      => [
                 'value'    => 'dot_comma_style',
                 'label'    => __('EU Style with Decimal (Ex: 123.456,00)', 'fluentform'),
                 'settings' => [
                     'decimal'   => ',',
                     'separator' => '.',
                     'precision' => 2,
-                    'symbol'    => ''
-                ]
-            ),
-            'comma_dot_style_zero' => array(
+                    'symbol'    => '',
+                ],
+            ],
+            'comma_dot_style_zero' => [
                 'value'    => 'comma_dot_style_zero',
                 'label'    => __('EU Style without Decimal (EX: 123.456.789)', 'fluentform'),
                 'settings' => [
                     'decimal'   => ',',
                     'separator' => '.',
                     'precision' => 0,
-                    'symbol'    => ''
-                ]
-            )
-        ));
+                    'symbol'    => '',
+                ],
+            ],
+        ]);
     }
 
     public static function getNumericValue($input, $formatterName)
@@ -512,9 +512,9 @@ class Helper
 
     public static function getPreviewUrl($formId, $type = '')
     {
-        if ($type == 'conversational') {
+        if ('conversational' == $type) {
             return self::getConversionUrl($formId);
-        } elseif ($type == 'classic') {
+        } elseif ('classic' == $type) {
             return site_url('?fluent_forms_pages=1&design_mode=1&preview_id=' . $formId) . '#ff_preview';
         } else {
             if (self::isConversionForm($formId)) {
@@ -542,27 +542,27 @@ class Helper
         $meta = self::getFormMeta($formId, 'ffc_form_settings_meta', []);
         $key = ArrayHelper::get($meta, 'share_key', '');
         $paramKey = apply_filters('fluentform_conversational_url_slug', 'fluent-form');
-        if ($paramKey == 'form') {
+        if ('form' == $paramKey) {
             $paramKey = 'fluent-form';
         }
         if ($key) {
-            return site_url('?'.$paramKey.'=' . $formId . '&form=' . $key);
+            return site_url('?' . $paramKey . '=' . $formId . '&form=' . $key);
         }
-        return site_url('?'.$paramKey.'=' . $formId);
+        return site_url('?' . $paramKey . '=' . $formId);
     }
 
     public static function fileUploadLocations()
     {
-        $locations = array(
-            array(
+        $locations = [
+            [
                 'value' => 'default',
                 'label' => __('Fluentforms Default', 'fluentform'),
-            ),
-            array(
+            ],
+            [
                 'value' => 'wp_media',
                 'label' => __('Media Library', 'fluentform'),
-            ),
-        );
+            ],
+        ];
 
         return apply_filters('fluentform_file_upload_options', $locations);
     }
@@ -582,13 +582,12 @@ class Helper
             ->orderBy('id', 'DESC')
             ->get();
 
-
-        $forms = array();
+        $forms = [];
 
         if ($ff_list) {
             $forms[0] = esc_html__('Select a Fluent Forms', 'fluentform');
             foreach ($ff_list as $form) {
-                $forms[$form->id] = esc_html($form->title) .' ('.$form->id.')';
+                $forms[$form->id] = esc_html($form->title) . ' (' . $form->id . ')';
             }
         } else {
             $forms[0] = esc_html__('Create a Form First', 'fluentform');
@@ -633,9 +632,9 @@ class Helper
 
     public static function shouldHidePassword($formId)
     {
-        return apply_filters('fluentform_truncate_password_values', true, $formId) && 
+        return apply_filters('fluentform_truncate_password_values', true, $formId) &&
         (
-            (defined('FLUENTFORM_RENDERING_ENTRIES') && FLUENTFORM_RENDERING_ENTRIES) || 
+            (defined('FLUENTFORM_RENDERING_ENTRIES') && FLUENTFORM_RENDERING_ENTRIES) ||
             (defined('FLUENTFORM_RENDERING_ENTRY') && FLUENTFORM_RENDERING_ENTRY) ||
             (defined('FLUENTFORM_EXPORTING_ENTRIES') && FLUENTFORM_EXPORTING_ENTRIES)
         );

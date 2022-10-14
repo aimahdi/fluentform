@@ -9,8 +9,8 @@ class Turnstile
     /**
      * Verify turnstile response.
      *
-     * @param string $token response from the user.
-     * @param null $secret provided or already stored secret key.
+     * @param string $token  response from the user.
+     * @param null   $secret provided or already stored secret key.
      *
      * @return bool
      */
@@ -22,7 +22,7 @@ class Turnstile
             'method' => 'POST',
             'body'   => [
                 'secret'   => $secret,
-                'response' => $token
+                'response' => $token,
             ],
         ]);
 

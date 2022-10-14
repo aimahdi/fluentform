@@ -25,7 +25,7 @@
                     <?php echo intval($form->id) .' - '. esc_attr($form->title);  ?>
                 </li>
                 <li>
-                    <a href="<?php echo admin_url('admin.php?page=fluent_forms&form_id=' . intval($form_id) . '&route=editor') ?>">Edit Fields</a>
+                    <a href="<?php echo esc_url(admin_url('admin.php?page=fluent_forms&form_id=' . intval($form_id) . '&route=editor')) ?>">Edit Fields</a>
                 </li>
             </ul>
         </div>
@@ -64,7 +64,7 @@
                             <li>Visual Data Reporting</li>
                         </ul>
                         <p style="text-align: center">
-                            <a target="_blank" rel="nofollow" class="ff_upgrade_btn" href="<?php echo fluentform_upgrade_url(); ?>">Upgrade to Pro</a>
+                            <a target="_blank" rel="nofollow" class="ff_upgrade_btn" href="<?php echo esc_url(fluentform_upgrade_url()); ?>">Upgrade to Pro</a>
                         </p>
 
 
@@ -80,7 +80,7 @@
                         </ul>
 
                         <p style="text-align: center">
-                            <a target="_blank" rel="nofollow" class="ff_upgrade_btn" href="<?php echo fluentform_upgrade_url(); ?>">Upgrade to Pro</a>
+                            <a target="_blank" rel="nofollow" class="ff_upgrade_btn" href="<?php echo esc_url(fluentform_upgrade_url()); ?>">Upgrade to Pro</a>
                         </p>
                     </div>
                 </div>

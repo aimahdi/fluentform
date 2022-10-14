@@ -22,15 +22,18 @@ class Protector
 
     /**
      * Encryp a text using a predefined salt.
-     * 
+     *
      * @param string $text
+     *
      * @return string $text
      */
     public static function encrypt($text)
     {
         $key = static::getSalt();
 
-        $ivlen = openssl_cipher_iv_length($cipher = "AES-128-CBC");
+        $cipher = 'AES-128-CBC';
+
+        $ivlen = openssl_cipher_iv_length($cipher);
 
         $iv = openssl_random_pseudo_bytes($ivlen);
 
@@ -43,8 +46,9 @@ class Protector
 
     /**
      * Decrypt a text using a predefined salt.
-     * 
+     *
      * @param string $text
+     *
      * @return string $text
      */
     public static function decrypt($text)
@@ -53,7 +57,9 @@ class Protector
 
         $c = base64_decode($text);
 
-        $ivlen = openssl_cipher_iv_length($cipher = "AES-128-CBC");
+        $cipher = 'AES-128-CBC';
+
+        $ivlen = openssl_cipher_iv_length($cipher);
 
         $iv = substr($c, 0, $ivlen);
 
@@ -65,8 +71,7 @@ class Protector
 
         $calcmac = hash_hmac('sha256', $ciphertext_raw, $key, $as_binary = true);
 
-        if (hash_equals($hmac, $calcmac)) // timing attack safe comparison
-        {
+        if (hash_equals($hmac, $calcmac)) { // timing attack safe comparison
             return $original_plaintext;
         }
     }

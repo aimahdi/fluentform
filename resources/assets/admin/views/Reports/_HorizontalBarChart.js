@@ -1,4 +1,5 @@
-import { HorizontalBar } from 'vue-chartjs'
+const HorizontalBar = window.VueChartJs.HorizontalBar;
+
 export default {
     extends: HorizontalBar,
     props: {

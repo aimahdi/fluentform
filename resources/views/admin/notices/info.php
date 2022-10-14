@@ -13,7 +13,7 @@
         <p><?php echo esc_html($notice['message']); ?></p>
         <div class="ff_notice_buttons">
             <?php foreach ($notice['links'] as $link): ?>
-                <a <?php echo $link['btn_atts']; ?> href="<?php echo esc_url($link['href']); ?>"><?php echo esc_html($link['btn_text']); ?></a>
+                <a <?php echo wp_kses_post($link['btn_atts']); ?> href="<?php echo esc_url($link['href']); ?>"><?php echo esc_html($link['btn_text']); ?></a>
             <?php endforeach; ?>
         </div>
     </div>

@@ -4,19 +4,18 @@
  * Declare frontend actions/filters/shortcodes
  */
 
-//if ($app->getEnv() == 'dev') {
-//	add_filter('init', function() use ($app) {
-//		if ($header = $app->request->header('X-HOOK')) {
-//			error_log($header);
-//		}
-//	});
-//}
-
+// if ('dev' == $app->getEnv()) {
+//     add_filter('init', function () use ($app) {
+//         if ($header = $app->request->header('X-HOOK')) {
+//             error_log($header);
+//         }
+//     });
+// }
 
 /*
  * Exclude For WP Rocket Settings
  */
-if(defined('WP_ROCKET_VERSION')) {
+if (defined('WP_ROCKET_VERSION')) {
     add_filter('rocket_excluded_inline_js_content', function ($lines) {
         $lines[] = 'fluent_form_ff_form_instance';
         $lines[] = 'fluentFormVars';
@@ -35,36 +34,36 @@ add_filter('fluentform_rendering_form', function ($form) {
     }
     $type = \FluentForm\Framework\Helpers\ArrayHelper::get($option, 'misc.captcha_type');
     $reCaptcha = [
-        "element"    => "recaptcha",
-        "attributes" => [
-            "name" => "recaptcha",
+        'element'    => 'recaptcha',
+        'attributes' => [
+            'name' => 'recaptcha',
         ],
     ];
     $hCaptcha = [
-        "element"    => "hcaptcha",
-        "attributes" => [
-            "name" => "hcaptcha",
+        'element'    => 'hcaptcha',
+        'attributes' => [
+            'name' => 'hcaptcha',
         ],
     ];
     $turnstile = [
-        "element"    => "turnstile",
-        "attributes" => [
-            "name" => "turnstile",
+        'element'    => 'turnstile',
+        'attributes' => [
+            'name' => 'turnstile',
         ],
     ];
-    
-    if ($type == 'recaptcha') {
+
+    if ('recaptcha' == $type) {
         $captcha = $reCaptcha;
-    } elseif ($type == 'hcaptcha') {
+    } elseif ('hcaptcha' == $type) {
         $captcha = $hCaptcha;
-    } elseif ($type == 'turnstile') {
+    } elseif ('turnstile' == $type) {
         $captcha = $turnstile;
     }
-    
+
     // place recaptcha below custom submit button
     $hasCustomSubmit = false;
     foreach ($form->fields['fields'] as $index => $field) {
-        if ($field['element'] == 'custom_submit_button') {
+        if ('custom_submit_button' == $field['element']) {
             $hasCustomSubmit = true;
             array_splice($form->fields['fields'], $index, 0, [$captcha]);
             break;
@@ -73,6 +72,6 @@ add_filter('fluentform_rendering_form', function ($form) {
     if (!$hasCustomSubmit) {
         $form->fields['fields'][] = $captcha;
     }
-    
+
     return $form;
 }, 10, 1);

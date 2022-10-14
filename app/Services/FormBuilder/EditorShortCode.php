@@ -9,28 +9,28 @@ class EditorShortCode
     public static function getGeneralShortCodes()
     {
         return [
-            'title' => 'General SmartCodes',
+            'title'      => 'General SmartCodes',
             'shortcodes' => [
-                '{wp.admin_email}' => __('Admin Email', 'fluentform'),
-                '{wp.site_url}' => __('Site URL', 'fluentform'),
-                '{wp.site_title}' => __('Site Title', 'fluentform'),
-                '{ip}' => __('IP Address', 'fluentform'),
-                '{date.m/d/Y}' => __('Date (mm/dd/yyyy)', 'fluentform'),
-                '{date.d/m/Y}' => __('Date (dd/mm/yyyy)', 'fluentform'),
-                '{embed_post.ID}' => __('Embedded Post/Page ID', 'fluentform'),
-                '{embed_post.post_title}' => __('Embedded Post/Page Title', 'fluentform'),
-                '{embed_post.permalink}' => __('Embedded URL', 'fluentform'),
-                '{http_referer}' => __('HTTP Referer URL', 'fluentform'),
-                '{user.ID}' => __('User ID', 'fluentform'),
-                '{user.display_name}' => __('User Display Name', 'fluentform'),
-                '{user.first_name}' => __('User First Name', 'fluentform'),
-                '{user.last_name}' => __('User Last Name', 'fluentform'),
-                '{user.user_email}' => __('User Email', 'fluentform'),
-                '{user.user_login}' => __('User Username', 'fluentform'),
-                '{browser.name}' => __('User Browser Client', 'fluentform'),
-                '{browser.platform}' => __('User Operating System', 'fluentform'),
-                '{random_string.your_prefix}' => __('Random String with Prefix', 'fluentform')
-            ]
+                '{wp.admin_email}'            => __('Admin Email', 'fluentform'),
+                '{wp.site_url}'               => __('Site URL', 'fluentform'),
+                '{wp.site_title}'             => __('Site Title', 'fluentform'),
+                '{ip}'                        => __('IP Address', 'fluentform'),
+                '{date.m/d/Y}'                => __('Date (mm/dd/yyyy)', 'fluentform'),
+                '{date.d/m/Y}'                => __('Date (dd/mm/yyyy)', 'fluentform'),
+                '{embed_post.ID}'             => __('Embedded Post/Page ID', 'fluentform'),
+                '{embed_post.post_title}'     => __('Embedded Post/Page Title', 'fluentform'),
+                '{embed_post.permalink}'      => __('Embedded URL', 'fluentform'),
+                '{http_referer}'              => __('HTTP Referer URL', 'fluentform'),
+                '{user.ID}'                   => __('User ID', 'fluentform'),
+                '{user.display_name}'         => __('User Display Name', 'fluentform'),
+                '{user.first_name}'           => __('User First Name', 'fluentform'),
+                '{user.last_name}'            => __('User Last Name', 'fluentform'),
+                '{user.user_email}'           => __('User Email', 'fluentform'),
+                '{user.user_login}'           => __('User Username', 'fluentform'),
+                '{browser.name}'              => __('User Browser Client', 'fluentform'),
+                '{browser.platform}'          => __('User Operating System', 'fluentform'),
+                '{random_string.your_prefix}' => __('Random String with Prefix', 'fluentform'),
+            ],
         ];
     }
 
@@ -40,13 +40,13 @@ class EditorShortCode
         $formFields = FormFieldsParser::getShortCodeInputs(
             $form,
             [
-                'admin_label', 'attributes', 'options'
+                'admin_label', 'attributes', 'options',
             ]
         );
 
         $formShortCodes = [
             'shortcodes' => [],
-            'title' => 'Input Options'
+            'title'      => 'Input Options',
         ];
 
         $formShortCodes['shortcodes']['{all_data}'] = 'All Submitted Data';
@@ -61,15 +61,15 @@ class EditorShortCode
     public static function getSubmissionShortcodes($form = false)
     {
         $submissionProperties = [
-            '{submission.id}' => __('Submission ID', 'fluentform'),
-            '{submission.serial_number}' => __('Submission Serial Number', 'fluentform'),
-            '{submission.source_url}' => __('Source URL', 'fluentform'),
-            '{submission.user_id}' => __('User Id', 'fluentform'),
-            '{submission.browser}' => __('Submitter Browser', 'fluentform'),
-            '{submission.device}' => __('Submitter Device', 'fluentform'),
-            '{submission.status}' => __('Submission Status', 'fluentform'),
-            '{submission.created_at}' => __('Submission Create Date', 'fluentform'),
-            '{submission.admin_view_url}' => __('Submission Admin View URL', 'fluentform')
+            '{submission.id}'             => __('Submission ID', 'fluentform'),
+            '{submission.serial_number}'  => __('Submission Serial Number', 'fluentform'),
+            '{submission.source_url}'     => __('Source URL', 'fluentform'),
+            '{submission.user_id}'        => __('User Id', 'fluentform'),
+            '{submission.browser}'        => __('Submitter Browser', 'fluentform'),
+            '{submission.device}'         => __('Submitter Device', 'fluentform'),
+            '{submission.status}'         => __('Submission Status', 'fluentform'),
+            '{submission.created_at}'     => __('Submission Create Date', 'fluentform'),
+            '{submission.admin_view_url}' => __('Submission Admin View URL', 'fluentform'),
         ];
 
         if ($form) {
@@ -84,23 +84,23 @@ class EditorShortCode
         }
 
         return [
-            'title' => 'Entry Attributes',
-            'shortcodes' => $submissionProperties
+            'title'      => 'Entry Attributes',
+            'shortcodes' => $submissionProperties,
         ];
     }
 
     public static function getPaymentShortcodes($form)
     {
         return [
-            'title' => 'Payment Details',
+            'title'      => 'Payment Details',
             'shortcodes' => [
-                '{payment.receipt}' => __('Payment Receipt', 'fluentform'),
-                '{payment.summary}' => __('Payment Summary', 'fluentform'),
-                '{payment.order_items}' => __('Order Items Table', 'fluentform'),
+                '{payment.receipt}'        => __('Payment Receipt', 'fluentform'),
+                '{payment.summary}'        => __('Payment Summary', 'fluentform'),
+                '{payment.order_items}'    => __('Order Items Table', 'fluentform'),
                 '{payment.payment_status}' => __('Payment Status', 'fluentform'),
-                '{payment.payment_total}' => __('Payment Total', 'fluentform'),
+                '{payment.payment_total}'  => __('Payment Total', 'fluentform'),
                 '{payment.payment_method}' => __('Payment Method', 'fluentform'),
-            ]
+            ],
         ];
     }
 
@@ -110,7 +110,7 @@ class EditorShortCode
         $groups = [
             static::getFormShortCodes($form),
             static::getGeneralShortCodes(),
-            static::getSubmissionShortcodes($form)
+            static::getSubmissionShortcodes($form),
         ];
 
         if ($form->has_payment) {
@@ -145,7 +145,7 @@ class EditorShortCode
     public static function parseString($string, $data, callable $arrayFormatter = null)
     {
         return preg_replace_callback('/{+(.*?)}/', function ($matches) use (&$data, &$arrayFormatter) {
-            if (!isset($data[$matches[1]])) {
+            if (! isset($data[$matches[1]])) {
                 return $matches[0];
             } elseif (is_array($value = $data[$matches[1]])) {
                 return is_callable($arrayFormatter) ? $arrayFormatter($value) : implode(', ', $value);

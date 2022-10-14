@@ -11,12 +11,15 @@ use FluentForm\Framework\Helpers\ArrayHelper;
 class Inputs
 {
     /**
+     * Request object
+     *
      * @var \FluentForm\Framework\Request\Request
      */
     private $request;
 
     /**
      * Build the class instance
+     *
      * @throws \Exception
      */
     public function __construct(Application $application)
@@ -32,9 +35,9 @@ class Inputs
         $formId = $this->request->get('formId');
 
         $form = wpFluent()->table('fluentform_forms')->find($formId);
-        
+
         $fields = FormFieldsParser::getShortCodeInputs($form, [
-            'admin_label', 'attributes', 'options'
+            'admin_label', 'attributes', 'options',
         ]);
 
         $fields = array_filter($fields, function ($field) {
@@ -66,7 +69,7 @@ class Inputs
             'input_hidden',
             'input_file',
             'input_image',
-            'subscription_payment_component'
+            'subscription_payment_component',
         ];
 
         return apply_filters('fluentform_supported_conditional_fields', $supportedConditionalFields);
@@ -76,12 +79,12 @@ class Inputs
     {
         foreach ($fields as $index => $field) {
             $element = ArrayHelper::get($field, 'element');
-            if ($element == 'select_country') {
+            if ('select_country' == $element) {
                 $fields[$index]['options'] = App::load(
                     App::appPath('Services/FormBuilder/CountryNames.php')
                 );
-            } elseif ($element == 'gdpr-agreement' || $element == 'terms_and_condition') {
-                $fields[$index]['options'] = array('on' => 'Checked');
+            } elseif ('gdpr-agreement' == $element || 'terms_and_condition' == $element) {
+                $fields[$index]['options'] = ['on' => 'Checked'];
             }
         }
 

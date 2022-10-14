@@ -8,7 +8,6 @@
         "production": "mix --production"
     },
     "dependencies": {
-        "chart.js": "^2.9.4",
         "chroma-js": "^2.4.2",
         "clipboard": "^2.0.11",
         "element-theme-chalk": "^2.15.9",
@@ -21,7 +20,6 @@
         "splitpanes": "^2.4.1",
         "vddl": "^0.7.1",
         "vue": "^2.6.14",
-        "vue-chartjs": "^3.5.1",
         "vue-html-to-paper": "^1.4.4",
         "vue-router": "^3.5.3",
         "vuex": "^3.6.2"

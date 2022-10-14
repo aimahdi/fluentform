@@ -1,4 +1,5 @@
-import { Bar } from 'vue-chartjs'
+const Bar = window.VueChartJs.Bar;
+
 export default {
     extends: Bar,
     props: {

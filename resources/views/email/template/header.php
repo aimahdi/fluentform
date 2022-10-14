@@ -13,7 +13,7 @@ $contentType = apply_filters('fluentform_email_content_type_header', 'text/html;
 <!DOCTYPE html>
 <html dir="<?php echo is_rtl() ? 'rtl' : 'ltr'?>">
     <head>
-        <meta http-equiv="Content-Type" content="<?php echo $contentType; ?>" />
+        <meta http-equiv="Content-Type" content="<?php echo esc_attr($contentType); ?>" />
         <meta name="x-apple-disable-message-reformatting" />
         <title><?php echo get_bloginfo( 'name', 'display' ); ?></title>
     </head>

@@ -1,4 +1,5 @@
-import {Bar, mixins} from 'vue-chartjs'
+const Bar = window.VueChartJs.Bar;
+const mixins = window.VueChartJs.mixins;
 
 const {reactiveProp} = mixins;
 

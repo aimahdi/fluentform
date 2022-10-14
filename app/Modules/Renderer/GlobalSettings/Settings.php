@@ -9,6 +9,8 @@ use FluentForm\Framework\Foundation\Application;
 class Settings
 {
     /**
+     * App instance
+     *
      * @var \FluentForm\Framework\Foundation\Application
      */
     protected $app;

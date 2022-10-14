@@ -2,7 +2,7 @@
 
 namespace FluentForm\App\Modules\Widgets;
 
-if ( ! class_exists('OxyEl')) {
+if (!class_exists('OxyEl')) {
     return;
 }
 
@@ -15,7 +15,7 @@ class OxygenEl extends \OxyEl
 
     public function class_names()
     {
-        return array('ff-oxy-element');
+        return ['ff-oxy-element'];
     }
 
     public function button_place()
@@ -23,10 +23,10 @@ class OxygenEl extends \OxyEl
         $button_place = $this->accordion_button_place();
 
         if ($button_place) {
-            return "fluentform::" . $button_place;
+            return 'fluentform::' . $button_place;
         }
 
-        return "";
+        return '';
     }
 
     public function button_priority()
@@ -36,7 +36,7 @@ class OxygenEl extends \OxyEl
 
     public function isBuilderEditorActive()
     {
-        if (isset($_GET['oxygen_iframe']) || defined('OXY_ELEMENTS_API_AJAX')) {
+        if (wpFluentForm('request')->get('oxygen_iframe') || defined('OXY_ELEMENTS_API_AJAX')) {
             return true;
         }
 

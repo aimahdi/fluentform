@@ -17,6 +17,8 @@ use FluentForm\App\Services\Integrations\MailChimp\MailChimp;
 class Settings
 {
     /**
+     * Request Object
+     *
      * @var \FluentForm\Framework\Request\Request
      */
     protected $request;
@@ -61,9 +63,9 @@ class Settings
             'storeTurnstile',
             'storeSaveGlobalLayoutSettings',
             'storeMailChimpSettings',
-            'storeEmailSummarySettings'
+            'storeEmailSummarySettings',
         ];
-        do_action('fluentform_saving_global_settings_with_key_method',$this->request);
+        do_action('fluentform_saving_global_settings_with_key_method', $this->request);
 
         if (in_array($method, $allowedMethods)) {
             $this->{$method}();
@@ -74,14 +76,14 @@ class Settings
     {
         $data = $this->request->get('reCaptcha');
 
-        if ($data == 'clear-settings') {
+        if ('clear-settings' == $data) {
             delete_option('_fluentform_reCaptcha_details');
 
             update_option('_fluentform_reCaptcha_keys_status', false, 'no');
 
             wp_send_json_success([
                 'message' => __('Your reCAPTCHA settings are deleted.', 'fluentform'),
-                'status'  => false
+                'status'  => false,
             ], 200);
         }
 
@@ -99,9 +101,9 @@ class Settings
             if ($status) {
                 // Prepare captcha data.
                 $captchaData = [
-                    'siteKey'   => sanitize_text_field(ArrayHelper::get($data, 'siteKey')),
-                    'secretKey' => sanitize_text_field($secretKey),
-                    'api_version' => ArrayHelper::get($data, 'api_version')
+                    'siteKey'     => sanitize_text_field(ArrayHelper::get($data, 'siteKey')),
+                    'secretKey'   => sanitize_text_field($secretKey),
+                    'api_version' => ArrayHelper::get($data, 'api_version'),
                 ];
 
                 // Update the reCaptcha details with siteKey & secretKey.
@@ -114,7 +116,7 @@ class Settings
                 // that the reCaptcha is valid and saved properly.
                 wp_send_json_success([
                     'message' => __('Your reCAPTCHA is valid and saved.', 'fluentform'),
-                    'status'  => $status
+                    'status'  => $status,
                 ], 200);
             } else { // reCaptcha is not valid.
                 $message = __('Sorry, Your reCAPTCHA is not valid. Please try again', 'fluentform');
@@ -132,7 +134,7 @@ class Settings
 
         wp_send_json_error([
             'message' => $message,
-            'status'  => $status
+            'status'  => $status,
         ], 400);
     }
 
@@ -140,14 +142,14 @@ class Settings
     {
         $data = $this->request->get('hCaptcha');
 
-        if ($data == 'clear-settings') {
+        if ('clear-settings' == $data) {
             delete_option('_fluentform_hCaptcha_details');
 
             update_option('_fluentform_hCaptcha_keys_status', false, 'no');
 
             wp_send_json_success([
                 'message' => __('Your hCaptcha settings are deleted.', 'fluentform'),
-                'status'  => false
+                'status'  => false,
             ], 200);
         }
 
@@ -177,7 +179,7 @@ class Settings
                 // that the hCaptcha is valid and saved properly.
                 wp_send_json_success([
                     'message' => __('Your hCaptcha is valid and saved.', 'fluentform'),
-                    'status'  => $status
+                    'status'  => $status,
                 ], 200);
             } else { // hCaptcha is not valid.
                 $message = __('Sorry, Your hCaptcha is not valid, Please try again', 'fluentform');
@@ -195,7 +197,7 @@ class Settings
 
         wp_send_json_error([
             'message' => $message,
-            'status'  => $status
+            'status'  => $status,
         ], 400);
     }
 
@@ -203,14 +205,14 @@ class Settings
     {
         $data = $this->request->get('turnstile');
 
-        if ($data == 'clear-settings') {
+        if ('clear-settings' == $data) {
             delete_option('_fluentform_turnstile_details');
 
             update_option('_fluentform_turnstile_keys_status', false, 'no');
 
             wp_send_json_success([
                 'message' => __('Your Turnstile settings are deleted.', 'fluentform'),
-                'status'  => false
+                'status'  => false,
             ], 200);
         }
 
@@ -228,7 +230,7 @@ class Settings
                 $captchaData = [
                     'siteKey'   => sanitize_text_field(ArrayHelper::get($data, 'siteKey')),
                     'secretKey' => sanitize_text_field($secretKey),
-                    'token' => $token
+                    'token'     => $token,
                 ];
 
                 // Update the turnstile details with siteKey & secretKey.
@@ -241,7 +243,7 @@ class Settings
                 // that the turnstile is valid and saved properly.
                 wp_send_json_success([
                     'message' => __('Your Turnstile is valid and saved.', 'fluentform'),
-                    'status'  => $status
+                    'status'  => $status,
                 ], 200);
             } else {
                 // turnstile is not valid.
@@ -261,7 +263,7 @@ class Settings
 
         wp_send_json_error([
             'message' => $message,
-            'status'  => $status
+            'status'  => $status,
         ], 400);
     }
 
@@ -278,7 +280,7 @@ class Settings
         update_option('_fluentform_global_form_settings', $sanitizedSettings, 'no');
 
         wp_send_json_success([
-            'message' => __('Global layout settings has been saved')
+            'message' => __('Global layout settings has been saved'),
         ], 200);
     }
 
@@ -289,7 +291,7 @@ class Settings
         if (!$mailChimp['apiKey']) {
             $mailChimpSettings = [
                 'apiKey' => '',
-                'status' => false
+                'status' => false,
             ];
             // Update the reCaptcha details with siteKey & secretKey.
 
@@ -297,7 +299,7 @@ class Settings
 
             wp_send_json_success([
                 'message' => __('Your settings has been updated', 'fluentform'),
-                'status'  => false
+                'status'  => false,
             ], 200);
         }
 
@@ -310,7 +312,7 @@ class Settings
             }
         } catch (\Exception $exception) {
             wp_send_json_error([
-                'message' => $exception->getMessage()
+                'message' => $exception->getMessage(),
             ], 400);
         }
 
@@ -318,7 +320,7 @@ class Settings
 
         $mailChimpSettings = [
             'apiKey' => sanitize_text_field($mailChimp['apiKey']),
-            'status' => true
+            'status' => true,
         ];
 
         // Update the reCaptcha details with siteKey & secretKey.
@@ -326,17 +328,17 @@ class Settings
 
         wp_send_json_success([
             'message' => __('Your mailchimp api key has been verfied and successfully set', 'fluentform'),
-            'status'  => true
+            'status'  => true,
         ], 200);
     }
 
     public function storeEmailSummarySettings()
     {
         $defaults = [
-            'status' => 'yes',
-            'send_to_type' => 'admin_email',
+            'status'            => 'yes',
+            'send_to_type'      => 'admin_email',
             'custom_recipients' => '',
-            'sending_day' => 'Mon'
+            'sending_day'       => 'Mon',
         ];
         $settings = $this->request->get('value');
         $settings = json_decode($settings, true);
@@ -351,8 +353,7 @@ class Settings
         }
 
         wp_send_json_success([
-            'message' => __('Email Summary Settings has been updated')
+            'message' => __('Email Summary Settings has been updated'),
         ], 200);
-
     }
 }

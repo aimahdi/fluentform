@@ -1,4 +1,5 @@
-import { Pie } from 'vue-chartjs'
+const Pie = window.VueChartJs.Pie;
+
 export default {
     extends: Pie,
     props: {

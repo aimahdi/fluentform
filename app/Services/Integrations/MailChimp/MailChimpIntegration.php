@@ -29,11 +29,11 @@ class MailChimpIntegration extends IntegrationManager
 
         $this->logo = $this->app->url('public/img/integrations/mailchimp.png');
         $this->registerAdminHooks();
-        
-        add_action('wp_ajax_fluentform_mailchimp_interest_groups', array($this, 'fetchInterestGroups'));
-    
-        add_filter('fluentform_save_integration_value_mailchimp', array($this, 'sanitizeSettings'), 10, 3);
-        
+
+        add_action('wp_ajax_fluentform_mailchimp_interest_groups', [$this, 'fetchInterestGroups']);
+
+        add_filter('fluentform_save_integration_value_mailchimp', [$this, 'sanitizeSettings'], 10, 3);
+
 //        add_filter('fluentform_notifying_async_mailchimp', '__return_false');
     }
 
@@ -49,31 +49,31 @@ class MailChimpIntegration extends IntegrationManager
             'fields'           => [
                 'apiKey' => [
                     'type'       => 'text',
-                    'label_tips' => __("Enter your Mailchimp API Key, if you do not have <br>Please login to your Mailchimp account and go to<br>Profile -> Extras -> Api Keys", 'fluentform'),
+                    'label_tips' => __('Enter your Mailchimp API Key, if you do not have <br>Please login to your Mailchimp account and go to<br>Profile -> Extras -> Api Keys', 'fluentform'),
                     'label'      => __('Mailchimp API Key', 'fluentform'),
-                ]
+                ],
             ],
             'hide_on_valid'    => true,
             'discard_settings' => [
                 'section_description' => 'Your Mailchimp API integration is up and running',
                 'button_text'         => 'Disconnect Mailchimp',
                 'data'                => [
-                    'apiKey' => ''
+                    'apiKey' => '',
                 ],
-                'show_verify'         => true
-            ]
+                'show_verify' => true,
+            ],
         ];
     }
 
     public function getGlobalSettings($settings)
     {
         $globalSettings = get_option($this->optionKey);
-        if (!$globalSettings) {
+        if (! $globalSettings) {
             $globalSettings = [];
         }
         $defaults = [
             'apiKey' => '',
-            'status' => ''
+            'status' => '',
         ];
 
         return wp_parse_args($globalSettings, $defaults);
@@ -81,16 +81,16 @@ class MailChimpIntegration extends IntegrationManager
 
     public function saveGlobalSettings($mailChimp)
     {
-        if (!$mailChimp['apiKey']) {
+        if (! $mailChimp['apiKey']) {
             $mailChimpSettings = [
                 'apiKey' => '',
-                'status' => false
+                'status' => false,
             ];
             // Update the reCaptcha details with siteKey & secretKey.
             update_option($this->optionKey, $mailChimpSettings, 'no');
             wp_send_json_success([
                 'message' => __('Your settings has been updated and disconnected', 'fluentform'),
-                'status'  => false
+                'status'  => false,
             ], 200);
         }
 
@@ -98,12 +98,12 @@ class MailChimpIntegration extends IntegrationManager
         try {
             $MailChimp = new MailChimp($mailChimp['apiKey']);
             $result = $MailChimp->get('lists');
-            if (!$MailChimp->success()) {
+            if (! $MailChimp->success()) {
                 throw new \Exception($MailChimp->getLastError());
             }
         } catch (\Exception $exception) {
             wp_send_json_error([
-                'message' => $exception->getMessage()
+                'message' => $exception->getMessage(),
             ], 400);
         }
 
@@ -111,7 +111,7 @@ class MailChimpIntegration extends IntegrationManager
 
         $mailChimpSettings = [
             'apiKey' => sanitize_text_field($mailChimp['apiKey']),
-            'status' => true
+            'status' => true,
         ];
 
         // Update the reCaptcha details with siteKey & secretKey.
@@ -119,7 +119,7 @@ class MailChimpIntegration extends IntegrationManager
 
         wp_send_json_success([
             'message' => __('Your mailchimp api key has been verfied and successfully set', 'fluentform'),
-            'status'  => true
+            'status'  => true,
         ], 200);
     }
 
@@ -132,7 +132,7 @@ class MailChimpIntegration extends IntegrationManager
             'configure_title'       => __('Configuration required!', 'fluentform'),
             'global_configure_url'  => admin_url('admin.php?page=fluent_forms_settings#mailchimp'),
             'configure_message'     => __('Mailchimp is not configured yet! Please configure your mailchimp api first', 'fluentform'),
-            'configure_button_text' => __('Set Mailchimp API', 'fluentform')
+            'configure_button_text' => __('Set Mailchimp API', 'fluentform'),
         ];
 
         return $integrations;
@@ -141,24 +141,24 @@ class MailChimpIntegration extends IntegrationManager
     public function getIntegrationDefaults($settings, $formId)
     {
         $settings = [
-            'conditionals'      => [
+            'conditionals' => [
                 'conditions' => [],
                 'status'     => false,
-                'type'       => 'all'
+                'type'       => 'all',
             ],
-            'enabled'           => true,
-            'list_id'           => '',
-            'list_name'         => '',
-            'name'              => '',
-            'merge_fields'      => (object)[],
-            'tags' => '',
+            'enabled'                => true,
+            'list_id'                => '',
+            'list_name'              => '',
+            'name'                   => '',
+            'merge_fields'           => (object) [],
+            'tags'                   => '',
             'tag_routers'            => [],
             'tag_ids_selection_type' => 'simple',
-            'markAsVIP'         => false,
-            'fieldEmailAddress' => '',
-            'doubleOptIn'       => false,
-            'resubscribe'       => false,
-            'note'              => ''
+            'markAsVIP'              => false,
+            'fieldEmailAddress'      => '',
+            'doubleOptIn'            => false,
+            'resubscribe'            => false,
+            'note'                   => '',
         ];
 
         return $settings;
@@ -167,13 +167,13 @@ class MailChimpIntegration extends IntegrationManager
     public function getSettingsFields($settings, $formId)
     {
         return [
-            'fields'              => [
+            'fields' => [
                 [
                     'key'         => 'name',
                     'label'       => 'Name',
                     'required'    => true,
                     'placeholder' => 'Your Feed Name',
-                    'component'   => 'text'
+                    'component'   => 'text',
                 ],
                 [
                     'key'         => 'list_id',
@@ -196,87 +196,87 @@ class MailChimpIntegration extends IntegrationManager
                             'key'           => 'fieldEmailAddress',
                             'label'         => 'Email Address',
                             'required'      => true,
-                            'input_options' => 'emails'
-                        ]
-                    ]
+                            'input_options' => 'emails',
+                        ],
+                    ],
                 ],
                 [
-                    'key'          => 'interest_group',
-                    'require_list' => true,
-                    'label'        => 'Interest Group',
-                    'tips'         => 'You can map your mailchimp interest group for this contact',
-                    'component'    => 'chained_fields',
-                    'sub_type'     => 'radio',
-                    'category_label' => 'Select Interest Category',
+                    'key'               => 'interest_group',
+                    'require_list'      => true,
+                    'label'             => 'Interest Group',
+                    'tips'              => 'You can map your mailchimp interest group for this contact',
+                    'component'         => 'chained_fields',
+                    'sub_type'          => 'radio',
+                    'category_label'    => 'Select Interest Category',
                     'subcategory_label' => 'Select Interest',
-                    'remote_url'   => admin_url('admin-ajax.php?action=fluentform_mailchimp_interest_groups'),
-                    'inline_tip'   => 'Select the mailchimp interest category and interest'
+                    'remote_url'        => admin_url('admin-ajax.php?action=fluentform_mailchimp_interest_groups'),
+                    'inline_tip'        => 'Select the mailchimp interest category and interest',
                 ],
                 [
-                    'key' => 'tags',
-                    'require_list' => true,
-                    'label' => 'Tags',
-                    'tips' => 'Associate tags to your Mailchimp contacts with a comma separated list (e.g. new lead, FluentForms, web source). Commas within a merge tag value will be created as a single tag.',
-                    'component'    => 'selection_routing',
-                    'simple_component' => 'value_text',
+                    'key'                => 'tags',
+                    'require_list'       => true,
+                    'label'              => 'Tags',
+                    'tips'               => 'Associate tags to your Mailchimp contacts with a comma separated list (e.g. new lead, FluentForms, web source). Commas within a merge tag value will be created as a single tag.',
+                    'component'          => 'selection_routing',
+                    'simple_component'   => 'value_text',
                     'routing_input_type' => 'text',
-                    'routing_key'  => 'tag_ids_selection_type',
-                    'settings_key' => 'tag_routers',
-                    'labels'       => [
+                    'routing_key'        => 'tag_ids_selection_type',
+                    'settings_key'       => 'tag_routers',
+                    'labels'             => [
                         'choice_label'      => 'Enable Dynamic Tag Input',
                         'input_label'       => '',
-                        'input_placeholder' => 'Tag'
+                        'input_placeholder' => 'Tag',
                     ],
-                    'inline_tip' => 'Please provide each tag by comma separated value, You can use dynamic smart codes'
+                    'inline_tip' => 'Please provide each tag by comma separated value, You can use dynamic smart codes',
                 ],
                 [
                     'key'          => 'note',
                     'require_list' => true,
                     'label'        => 'Note',
                     'tips'         => 'You can write a note for this contact',
-                    'component'    => 'value_textarea'
+                    'component'    => 'value_textarea',
                 ],
                 [
-                    'key'             => 'doubleOptIn',
-                    'require_list'    => true,
-                    'label'           => 'Double Opt-in',
-                    'tips'            => 'When the double opt-in option is enabled,<br />Mailchimp will send a confirmation email<br />to the user and will only add them to your <br /Mailchimp list upon confirmation.',
-                    'component'       => 'checkbox-single',
-                    'checkbox_label' => 'Enable Double Opt-in'
+                    'key'            => 'doubleOptIn',
+                    'require_list'   => true,
+                    'label'          => 'Double Opt-in',
+                    'tips'           => 'When the double opt-in option is enabled,<br />Mailchimp will send a confirmation email<br />to the user and will only add them to your <br /Mailchimp list upon confirmation.',
+                    'component'      => 'checkbox-single',
+                    'checkbox_label' => 'Enable Double Opt-in',
                 ],
                 [
-                    'key' => 'resubscribe',
-                    'require_list' => true,
-                    'label' => 'ReSubscribe',
-                    'tips' => 'When this option is enabled, if the subscriber is in an inactive state or<br />has previously been unsubscribed, they will be re-added to the active list.<br />Therefore, this option should be used with caution and only when appropriate.',
-                    'component' => 'checkbox-single',
-                    'checkbox_label' => 'Enable ReSubscription'
+                    'key'            => 'resubscribe',
+                    'require_list'   => true,
+                    'label'          => 'ReSubscribe',
+                    'tips'           => 'When this option is enabled, if the subscriber is in an inactive state or<br />has previously been unsubscribed, they will be re-added to the active list.<br />Therefore, this option should be used with caution and only when appropriate.',
+                    'component'      => 'checkbox-single',
+                    'checkbox_label' => 'Enable ReSubscription',
                 ],
                 [
-                    'key'             => 'markAsVIP',
-                    'require_list'    => true,
-                    'label'           => 'VIP',
-                    'tips'            => 'When enabled,<br /> This contact will be marked as VIP.',
-                    'component'       => 'checkbox-single',
-                    'checkbox_label' => 'Mark as VIP Contact'
+                    'key'            => 'markAsVIP',
+                    'require_list'   => true,
+                    'label'          => 'VIP',
+                    'tips'           => 'When enabled,<br /> This contact will be marked as VIP.',
+                    'component'      => 'checkbox-single',
+                    'checkbox_label' => 'Mark as VIP Contact',
                 ],
                 [
                     'require_list' => true,
                     'key'          => 'conditionals',
                     'label'        => 'Conditional Logics',
                     'tips'         => 'Allow mailchimp integration conditionally based on your submission values',
-                    'component'    => 'conditional_block'
+                    'component'    => 'conditional_block',
                 ],
                 [
-                    'require_list'    => true,
-                    'key'             => 'enabled',
-                    'label'           => 'Status',
-                    'component'       => 'checkbox-single',
-                    'checkbox_label' => 'Enable This feed'
-                ]
+                    'require_list'   => true,
+                    'key'            => 'enabled',
+                    'label'          => 'Status',
+                    'component'      => 'checkbox-single',
+                    'checkbox_label' => 'Enable This feed',
+                ],
             ],
             'button_require_list' => true,
-            'integration_title'   => 'Mailchimp'
+            'integration_title'   => 'Mailchimp',
         ];
     }
 
@@ -292,22 +292,22 @@ class MailChimpIntegration extends IntegrationManager
         $defaults = $this->getIntegrationDefaults([], $formId);
 
         foreach ($setting as $settingKey => $settingValue) {
-            if ($settingValue == 'true') {
+            if ('true' == $settingValue) {
                 $setting[$settingKey] = true;
-            } else if ($settingValue == 'false') {
+            } elseif ('false' == $settingValue) {
                 $setting[$settingKey] = false;
-            } else if ($settingKey == 'conditionals') {
-                if ($settingValue['status'] == 'true') {
+            } elseif ('conditionals' == $settingKey) {
+                if ('true' == $settingValue['status']) {
                     $settingValue['status'] = true;
-                } else if ($settingValue['status'] == 'false') {
+                } elseif ('false' == $settingValue['status']) {
                     $settingValue['status'] = false;
                 }
                 $setting['conditionals'] = $settingValue;
             }
         }
 
-        if (!empty($setting['list_id'])) {
-            $setting['list_id'] = (string)$setting['list_id'];
+        if (! empty($setting['list_id'])) {
+            $setting['list_id'] = (string) $setting['list_id'];
         }
 
         $settings['markAsVIP'] = ArrayHelper::isTrue($setting, 'markAsVIP');
@@ -321,8 +321,8 @@ class MailChimpIntegration extends IntegrationManager
         $settings = get_option('_fluentform_mailchimp_details');
         try {
             $MailChimp = new MailChimp($settings['apiKey']);
-            $lists = $MailChimp->get('lists', array('count' => 9999));
-            if (!$MailChimp->success()) {
+            $lists = $MailChimp->get('lists', ['count' => 9999]);
+            if (! $MailChimp->success()) {
                 return [];
             }
         } catch (\Exception $exception) {
@@ -339,14 +339,13 @@ class MailChimpIntegration extends IntegrationManager
 
     public function getMergeFields($list, $listId, $formId)
     {
-
-        if (!$this->isConfigured()) {
+        if (! $this->isConfigured()) {
             return false;
         }
 
         $mergedFields = $this->findMergeFields($listId);
 
-        $fields = array();
+        $fields = [];
 
         foreach ($mergedFields as $merged_field) {
             $fields[$merged_field['tag']] = $merged_field['name'];
@@ -362,9 +361,9 @@ class MailChimpIntegration extends IntegrationManager
         try {
             $MailChimp = new MailChimp($settings['apiKey']);
 
-            $list = $MailChimp->get('lists/' . $listId . '/merge-fields', array('count' => 9999));
+            $list = $MailChimp->get('lists/' . $listId . '/merge-fields', ['count' => 9999]);
 
-            if (!$MailChimp->success()) {
+            if (! $MailChimp->success()) {
                 return false;
             }
         } catch (\Exception $exception) {
@@ -376,14 +375,14 @@ class MailChimpIntegration extends IntegrationManager
 
     public function fetchInterestGroups()
     {
-	    $settings = wp_unslash($this->app->request->get('settings'));
+        $settings = wp_unslash($this->app->request->get('settings'));
 
         $listId = ArrayHelper::get($settings, 'list_id');
-        if(!$listId) {
+        if (! $listId) {
             wp_send_json_success([
-                'categories' => [],
+                'categories'    => [],
                 'subcategories' => [],
-                'reset_values' => true
+                'reset_values'  => true,
             ]);
         }
 
@@ -391,14 +390,14 @@ class MailChimpIntegration extends IntegrationManager
         $categories = $this->getInterestCategories($listId);
 
         $subCategories = [];
-        if($categoryId) {
+        if ($categoryId) {
             $subCategories = $this->getInterestSubCategories($listId, $categoryId);
         }
 
         wp_send_json_success([
-            'categories' => $categories,
+            'categories'    => $categories,
             'subcategories' => $subCategories,
-            'reset_values' => !$categories && !$subCategories
+            'reset_values'  => ! $categories && ! $subCategories,
         ]);
     }
 
@@ -407,11 +406,11 @@ class MailChimpIntegration extends IntegrationManager
         $settings = get_option('_fluentform_mailchimp_details');
         try {
             $MailChimp = new MailChimp($settings['apiKey']);
-            $categories = $MailChimp->get('/lists/'.$listId.'/interest-categories', array(
-                'count' => 9999,
-                'fields' => 'categories.id,categories.title'
-            ));
-            if (!$MailChimp->success()) {
+            $categories = $MailChimp->get('/lists/' . $listId . '/interest-categories', [
+                'count'  => 9999,
+                'fields' => 'categories.id,categories.title',
+            ]);
+            if (! $MailChimp->success()) {
                 return [];
             }
         } catch (\Exception $exception) {
@@ -421,8 +420,8 @@ class MailChimpIntegration extends IntegrationManager
         $formattedLists = [];
         foreach ($categories as $list) {
             $formattedLists[] = [
-              'value' => $list['id'],
-              'label' =>   $list['title']
+                'value' => $list['id'],
+                'label' => $list['title'],
             ];
         }
         return $formattedLists;
@@ -433,11 +432,11 @@ class MailChimpIntegration extends IntegrationManager
         $settings = get_option('_fluentform_mailchimp_details');
         try {
             $MailChimp = new MailChimp($settings['apiKey']);
-            $categories = $MailChimp->get('/lists/'.$listId.'/interest-categories/'.$categoryId.'/interests', array(
-                'count' => 9999,
-                'fields' => 'interests.id,interests.name'
-            ));
-            if (!$MailChimp->success()) {
+            $categories = $MailChimp->get('/lists/' . $listId . '/interest-categories/' . $categoryId . '/interests', [
+                'count'  => 9999,
+                'fields' => 'interests.id,interests.name',
+            ]);
+            if (! $MailChimp->success()) {
                 return [];
             }
         } catch (\Exception $exception) {
@@ -448,15 +447,15 @@ class MailChimpIntegration extends IntegrationManager
         foreach ($categories as $list) {
             $formattedLists[] = [
                 'value' => $list['id'],
-                'label' =>   $list['name']
+                'label' => $list['name'],
             ];
         }
         return $formattedLists;
     }
-    
+
     public function sanitizeSettings($integration, $integrationId, $formId)
     {
-        if (current_user_can('unfiltered_html') || apply_filters('fluent_form_disable_fields_sanitize', false)) {
+        if (fluentformCanUnfilteredHTML()) {
             return $integration;
         }
         $sanitizeMap = [
@@ -476,15 +475,14 @@ class MailChimpIntegration extends IntegrationManager
         return fluentform_backend_sanitizer($integration, $sanitizeMap);
     }
 
-
     /*
     * For Handling Notifications broadcast
     */
     public function notify($feed, $formData, $entry, $form)
     {
         $response = $this->subscribe($feed, $formData, $entry, $form);
-        
-        if ($response == true) {
+
+        if (true == $response) {
             do_action('ff_integration_action_result', $feed, 'success', 'Mailchimp feed has been successfully initialed and pushed data');
         } else {
             $message = 'Mailchimp feed has been failed to deliver feed';
