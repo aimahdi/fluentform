@@ -146,3 +146,8 @@
   opacity: 0;
   visibility: hidden;
 }
+
+/* Make lity popup upper elementor popup*/
+.lity {
+  z-index: 9999 !important;
+}

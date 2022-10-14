@@ -58,22 +58,16 @@ const formConditional = function ($, $theForm, form) {
                 const el = getElement(itemName);
                 let $parent = el.closest('.has-conditions');
                 if (status) {
-                    setTimeout(function () {
-                        $parent.addClass('ff_cond_v');
-                    }, 100);
-                    setTimeout(function () {
-                        $parent.removeClass('ff_excluded')
-                            .slideDown(200);
-                    }, 5);
+                    if ($parent.css('height') == '0px') {
+                        $parent.attr("style", "");
+                    }
+                    $parent.removeClass('ff_excluded')
+                        .addClass('ff_cond_v')
+                        .slideDown(200);
                 } else {
-                    setTimeout(function () {
-                        $parent.removeClass('ff_cond_v');
-                    }, 100);
-                    setTimeout(() => {
-                        $parent
-                            .addClass('ff_excluded')
-                            .slideUp(200);    
-                    }, 5);
+                    $parent.removeClass('ff_cond_v')
+                        .addClass('ff_excluded')
+                        .slideUp(200);
                 }
             });
             $theForm.trigger('do_calculation');
