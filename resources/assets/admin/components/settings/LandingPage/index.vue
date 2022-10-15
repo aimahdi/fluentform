@@ -38,7 +38,7 @@
                     </ul>
                 </div>
                 <div v-if="settings && active_tab == 'design'" class="ff_landing_settings_wrapper ffc_sidebar_body">
-                    <el-form ref="form" :model="settings" label-position="left" label-width="140px">
+                    <el-form ref="form" :model="settings" label-position="top" label-width="140px">
                         <el-form-item>
                             <template slot="label">
                                 {{ $t('Page Design Style') }}
@@ -47,6 +47,9 @@
                                 <el-radio v-for="(layoutName, layoutCode) in layouts" :key="layoutCode" :label="layoutCode">{{layoutName}}</el-radio>
                             </el-radio-group>
                         </el-form-item>
+                        <div>
+                            <LayoutPref :pref="settings"></LayoutPref>
+                        </div>
 
                         <el-form-item>
                             <template slot="label">
@@ -194,6 +197,7 @@
 <script type="text/babel">
     import WpEditor from '../../../../common/_wp_editor';
     import PhotoUploader from '../../../../common/PhotoUploader';
+    import ConversionStylePref from "../../../conversion_templates/ConversionStylePref";
     import Browser from './_Browser';
     import Share from './_Sharing';
 
@@ -203,7 +207,8 @@
             WpEditor,
             PhotoUploader,
             Browser,
-            Share
+            Share,
+            LayoutPref : ConversionStylePref
         },
         data() {
             return {
@@ -244,6 +249,9 @@
                 this.settings.share_url_salt = this.string_to_slug(value);
             },
             'settings.design_style': function (){
+                this.saveSettings(true);
+            },
+            'settings.layout': function (){
                 this.saveSettings(true);
             },
             'settings.background_image': function (){
@@ -298,6 +306,10 @@
                         }
 
                         this.settings = settings;
+                        this.settings.brightness = parseInt(this.settings.brightness);
+                        this.settings.media_x_position = parseInt(this.settings.media_x_position);
+                        this.settings.media_y_position = parseInt(this.settings.media_y_position);
+
                     })
                     .fail(error => {
                         if (!error.responseJSON) {
