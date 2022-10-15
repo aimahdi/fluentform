@@ -110,7 +110,7 @@ class FormCssJs
 
     public function addJs($formId, $customJS)
     {
-        if (fluentformCanUnfilteredHTML() && trim($customJS)) {
+        if (trim($customJS)) {
             add_action('wp_footer', function () use ($formId, $customJS) {
                 ?>
                 <script type="text/javascript">
@@ -152,7 +152,7 @@ class FormCssJs
         $formId = absint($this->request->get('form_id'));
 
         $css = fluentformSanitizeCSS($this->request->get('custom_css'));
-        $js = wp_unslash($this->request->get('custom_js'));
+        $js = fluentform_sanitize_html(wp_unslash($this->request->get('custom_js')));
 
         $this->store($formId, '_custom_form_css', $css);
         $this->store($formId, '_custom_form_js', $js);

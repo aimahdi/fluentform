@@ -254,7 +254,7 @@ class EditorShortcodeParser
         }
 
         if ('permalink' == $prop) {
-            return htmlspecialchars(site_url(sanitize_text_field(wp_unslash(wpFluentForm('request')->server('REQUEST_URI')))));
+            return site_url(esc_attr(wpFluentForm('request')->server('REQUEST_URI')));
         }
 
         if (property_exists($post, $prop)) {

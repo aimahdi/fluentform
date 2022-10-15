@@ -24,7 +24,7 @@ if (! function_exists('dd')) {
     {
         foreach (func_get_args() as $value) {
             echo '<pre>';
-            print_r($value); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $atts is escaped before being passed in.
+            print_r($value); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $value is only used for debugging in development.
             echo '</pre><br>';
         }
         die;
@@ -248,7 +248,7 @@ function fluentFormRender($atts)
  */
 function fluentFormPrintUnescapedInternalString($string)
 {
-    echo $string; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+    echo $string; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- deprecated function, should remove it later.
 }
 
 function fluentform_options_sanitize($options)
@@ -360,7 +360,7 @@ function fluentform_backend_sanitizer($array, $sanitizeMap = [])
  */
 function fluentformSanitizeCSS($css)
 {
-    preg_match('#</?\w+#', $css) ? '' : $css;
+    return preg_match('#</?\w+#', $css) ? '' : $css;
 }
 
 function fluentformCanUnfilteredHTML()

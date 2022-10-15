@@ -186,6 +186,8 @@ class Converter
 
                 if ('input_image' === $field['element']) {
                     $allowedFieldTypes = ArrayHelper::get($field, 'settings.validation_rules.allowed_image_types.value');
+
+                    $question['validationRules']['allowed_file_types'] = $question['validationRules']['allowed_image_types'];
                 } else {
                     $allowedFieldTypes = ArrayHelper::get($field, 'settings.validation_rules.allowed_file_types.value');
                 }

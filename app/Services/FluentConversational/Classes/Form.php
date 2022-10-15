@@ -406,7 +406,7 @@ class Form
                     }
                     if ($data = ArrayHelper::get($jsScript->extra, 'data')) {
                         printf("<script type='text/javascript' id='%s-js-extra'>\n", esc_attr($handle));
-                        echo wp_kses_post($data) . "\n";
+                        echo "$data\n"; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $data is hardcoded localized data and escaped before being passed in.
                         echo "</script>\n";
                     }
                     $src = $jsScript->src;
