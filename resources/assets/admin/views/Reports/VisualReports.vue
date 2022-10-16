@@ -48,7 +48,7 @@
                 <div v-if="(!total_entries && !loading) || (!reportIndexes.length && !loading)"
                      class="no_entries_found">
                     <p>{{
-                            $t('Sorry!No reports found based on your filter, available form submissions and input types')
+                            $t('Sorry! No reports found based on your filter, available form submissions and input types')
                         }}</p>
                 </div>
             </el-col>

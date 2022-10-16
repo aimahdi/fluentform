@@ -94,8 +94,8 @@
             </template>
 
             <template>
-                <el-radio v-model="editing_item.with_header" :label="$t('nop')">{{ $t('No Headers') }}</el-radio>
-                <el-radio v-model="editing_item.with_header" :label="$t('yup')">{{ $t('With Headers') }}</el-radio>
+                <el-radio v-model="editing_item.with_header" label="nop">{{ $t('No Headers') }}</el-radio>
+                <el-radio v-model="editing_item.with_header" label="yup">{{ $t('With Headers') }}</el-radio>
             </template>
             <error-view field="with_header" :errors="errors"></error-view>
         </el-form-item>

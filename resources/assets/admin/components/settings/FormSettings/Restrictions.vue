@@ -119,7 +119,7 @@
                     <el-input v-model="form.scheduleForm.pendingMsg" type="textarea"></el-input>
                 </el-form-item>
 
-                <el-form-item label="$t('Form Expired Message')">
+                <el-form-item :label="$t('Form Expired Message')">
                     <el-input v-model="form.scheduleForm.expiredMsg" type="textarea"></el-input>
                 </el-form-item>
             </div>

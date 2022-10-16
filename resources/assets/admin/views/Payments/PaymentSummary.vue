@@ -227,10 +227,10 @@
             width="60%">
             <el-form label-position="left" v-if="editingTransaction" :data="editingTransaction">
                 <el-form-item :label="$t('Billing Name')">
-                    <el-input placeholder="$t('Billing Name')" v-model="editingTransaction.payer_name"/>
+                    <el-input :placeholder="$t('Billing Name')" v-model="editingTransaction.payer_name"/>
                 </el-form-item>
                 <el-form-item :label="$t('Billing Email')">
-                    <el-input type="email" placeholder="$t('Billing Email')" v-model="editingTransaction.payer_email"/>
+                    <el-input type="email" :placeholder="$t('Billing Email')" v-model="editingTransaction.payer_email"/>
                 </el-form-item>
                 <el-form-item :label="$t('Billing Address')">
                     <el-input type="textarea" :placeholder="$t('Billing Address')" v-model="editingTransaction.billing_address"/>

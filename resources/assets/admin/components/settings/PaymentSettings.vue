@@ -227,8 +227,8 @@
                                 </el-tooltip>
                             </template>
                             <el-radio-group v-model="settings.custom_paypal_mode">
-                                <el-radio :label="$t('live')">{{ $t('Live Mode') }}</el-radio>
-                                <el-radio :label="$t('test')">{{ $t('Test Mode') }}</el-radio>
+                                <el-radio label="live">{{ $t('Live Mode') }}</el-radio>
+                                <el-radio label="test">{{ $t('Test Mode') }}</el-radio>
                             </el-radio-group>
                         </el-form-item>
                         <el-form-item label="PayPal Email">
