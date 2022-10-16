@@ -45,6 +45,8 @@ return [
     ],
     'address' => [
         'address',
+        'city',
+        'zip'
     ],
     'select_country' => [
         'country',
@@ -52,6 +54,7 @@ return [
     'input_number' => [
         'input',
         'number',
+        'numeric',
     ],
     'select' => [
         'select',
@@ -97,6 +100,7 @@ return [
         'section',
         'break',
         'textblock',
+        'info'
     ],
     'recaptcha' => [
         'recaptcha',
@@ -115,7 +119,7 @@ return [
     ],
     'terms_and_condition' => [
         'terms_and_condition',
-        'agrement',
+        'agreement',
         'checkbox',
     ],
     'action_hook' => [
