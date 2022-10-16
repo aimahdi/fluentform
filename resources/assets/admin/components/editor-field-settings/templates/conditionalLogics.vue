@@ -12,8 +12,8 @@
                 <elLabel slot="label" :label="$t('Condition Match')"
                          :helpText="$t('Select to match whether all rules are required or any. if the match success then the field will be shown')"></elLabel>
 
-                <el-radio v-model="conditional_logics.type" :label="$t('any')">{{ $t('Any') }}</el-radio>
-                <el-radio v-model="conditional_logics.type" :label="$t('all')">{{ $t('All') }}</el-radio>
+                <el-radio v-model="conditional_logics.type" label="any">{{ $t('Any') }}</el-radio>
+                <el-radio v-model="conditional_logics.type" label="all">{{ $t('All') }}</el-radio>
             </el-form-item>
 
             <div v-for="(condition, i) in conditional_logics.conditions" :key="i" class="conditional-logic">

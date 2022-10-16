@@ -4,7 +4,7 @@
             <elLabel
                     slot="label"
                     :label="$t('Subscription Type')"
-                    helpText="$t('Select your subscription plan type')"
+                    :helpText="$t('Select your subscription plan type')"
             />
 
             <el-radio-group

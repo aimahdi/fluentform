@@ -2,7 +2,7 @@
     <span>
         {{ $t(label) }}
         <el-tooltip v-if="helpText" popper-class="sidebar-popper" effect="dark" placement="top">
-            <div slot="content" v-html="$t(helpText)"></div>
+            <div slot="content" v-html="helpText"></div>
             <i class="tooltip-icon" :class="iconClass"></i>
         </el-tooltip>
     </span>

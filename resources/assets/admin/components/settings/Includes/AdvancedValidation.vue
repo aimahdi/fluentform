@@ -33,8 +33,8 @@
                     </el-radio-group>
                     <br />
                     <p v-if="settings.validation_type == 'fail_on_condition_met'">{{
-                            $t('Based on your selection, Submission ')}}<b>{{ $t('will be rejected ') }}</b> {{ $t('if ') }} {{ settings.type }} {{ $t('conditions are met') }}</p>
-                    <p v-else>{{ $t('Based on your selection, Submission ') }}<b>{{ $t('will be valid ') }}</b> {{ $t('if ') }} {{settings.type}} {{ $t('conditions are met') }}</p>
+                            $t('Based on your selection, submission ')}}<b>{{ $t('will be rejected ') }}</b> {{ $t('if ') }} {{ settings.type }} {{ $t('conditions are met') }}</p>
+                    <p v-else>{{ $t('Based on your selection, submission ') }}<b>{{ $t('will be valid ') }}</b> {{ $t('if ') }} {{settings.type}} {{ $t('conditions are met') }}</p>
                 </el-form-item>
                 <el-form-item>
                     <template slot="label">

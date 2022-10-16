@@ -259,7 +259,7 @@
                 <template v-if="editingTransaction.status == 'partially-refunded'">
                     <el-form-item :label="$t('New Refund Amount')">
                         <el-input type="number" step="any" v-model="editingTransaction.refund_amount"></el-input>
-                        <p>{{$t('Please Provide new refund amount only.')</p>
+                        <p>{{$t('Please Provide new refund amount only.')}}</p>
                     </el-form-item>
                     <el-form-item :label="$t('Refund Note')">
                         <el-input type="textarea" v-model="editingTransaction.refund_note"></el-input>
