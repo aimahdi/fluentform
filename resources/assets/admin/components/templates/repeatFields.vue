@@ -3,10 +3,18 @@
     <elLabel slot="label" :label="item.settings.label"></elLabel>
     <div class="repeat-field--item">
         <el-form-item v-for="(field, key, i) in item.fields" :key="i" :class="{ 'is-required' : field.settings.validation_rules.required.value }">
-            <elLabel v-if="isMultiCol" slot="label" :label="field.settings.label"></elLabel>
-            <el-input v-if="field.element != 'select'" :value="field.attributes.value" :placeholder="field.attributes.placeholder"></el-input>
-            <div v-else>
+            <elLabel v-if="isMultiCol" slot="label"
+                     :label="field.settings.label">
+            </elLabel>
+            <el-input v-if="field.element != 'select' && field.element != 'input_radio'"
+                      :value="field.attributes.value"
+                      :placeholder="field.attributes.placeholder">
+            </el-input>
+            <div v-else-if="field.element == 'select'">
                 <el-select :placeholder="field.attributes.placeholder"></el-select>
+            </div>
+            <div v-else-if="field.element == 'input_radio'">
+                <input-checkable :item="field"></input-checkable>
             </div>
         </el-form-item>
     </div>
@@ -19,11 +27,14 @@
 
 <script>
 import elLabel from '../includes/el-label.vue'
+import inputCheckable from './inputCheckable.vue'
+import InputCheckable from './inputCheckable';
 
 export default {
     name: 'repeat_fields',
     props: ['item'],
     components: {
+        InputCheckable,
         elLabel
     },
     computed: {

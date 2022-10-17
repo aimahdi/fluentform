@@ -32,6 +32,9 @@
                 <div v-if="field.element == 'input_mask'">
                     <fieldOptionSettings :field="field" :child-fields="inputMaskChildFields"></fieldOptionSettings>
                 </div>
+                <div v-if="field.element == 'input_radio'">
+                    <fieldOptionSettings :field="field" :child-fields="inputRadioChildFields"></fieldOptionSettings>
+                </div>
                 <template v-else>
                     <fieldOptionSettings :child-fields="inputChildFields" :field="field"></fieldOptionSettings>
                 </template>
@@ -63,17 +66,20 @@
                     'input_number': 'Numeric Field',
                     'select': 'Select Field',
                     'input_mask': 'Input Mask Field',
+                    'input_radio': 'Radio Field'
                 },
                 elementMaps: {
                     input_text: 'text',
                     input_email: 'email',
                     input_number: 'number',
                     select: 'select',
-                    input_mask: 'text'
+                    input_mask: 'text',
+                    input_radio: 'radio'
                 },
                 inputChildFields: ['label', 'value', 'placeholder'],
                 selectChildFields: ['label', 'placeholder', 'advanced_options'],
-                inputMaskChildFields: ['label', 'value', 'placeholder', 'temp_mask', 'data-mask', 'data-mask-reverse', 'temp_mask_list']
+                inputMaskChildFields: ['label', 'value', 'placeholder', 'temp_mask', 'data-mask', 'data-mask-reverse', 'temp_mask_list'],
+                inputRadioChildFields: ['label', 'dynamic_default_value', 'display_type', 'layout_class', 'layout_class_list', 'randomize_options', 'advanced_options']
             }
         },
         methods: {
@@ -161,6 +167,60 @@
                     ];
                 }
 
+                if (element == 'input_radio') {
+                    item.settings.dynamic_default_value = '';
+                    item.settings.layout_class_list = [
+                        {
+                            image: '',
+                            label: 'Default',
+                            value: ''
+                        },
+                        {
+                            image: '',
+                            label: 'Inline Layout',
+                            value: 'ff_list_inline'
+                        },
+                        {
+                            image: '',
+                            label: 'Button Type Styles',
+                            value: 'ff_list_buttons'
+                        },
+                        {
+                            image: '',
+                            label: '2-Column Layout',
+                            value: 'ff_list_2col'
+                        },
+                        {
+                            image: '',
+                            label: '3-Column Layout',
+                            value: 'ff_list_3col'
+                        },
+                        {
+                            image: '',
+                            label: '4-Column Layout',
+                            value: 'ff_list_4col'
+                        },
+                        {
+                            image: '',
+                            label: '5-Column Layout',
+                            value: 'ff_list_5col'
+                        }
+                    ];
+
+                    item.settings.advanced_options = [
+                        {
+                            image: '',
+                            label: 'Option 1',
+                            value: 'Option 1'
+                        },
+                        {
+                            image: '',
+                            label: 'Option 2',
+                            value: 'Option 2'
+                        }
+                    ];
+                }
+
                 return item;
             },
             highlightEl(el) {
@@ -171,9 +231,9 @@
             },
             increase(index) {
                 const newCol = _ff.cloneDeep(this.getTypeSettings('input_text'));
-                newCol.settings.label = `Column ${this.editItem.fields.length + 1}`;
+                newCol.settings.label = `Column ${ this.editItem.fields.length + 1 }`;
                 this.editItem.fields.splice(index + 1, 0, newCol);
-              //  this.editItem.fields.push(newCol);
+                //  this.editItem.fields.push(newCol);
             },
             decrease(index) {
                 if (this.editItem.fields.length > 1) {
@@ -183,7 +243,7 @@
 
                     this.$notify.error({
                         title: this.$t('Oops!'),
-                        message: this.$t("The last item can not be deleted."),
+                        message: this.$t('The last item can not be deleted.'),
                         offset: 30
                     });
                 }

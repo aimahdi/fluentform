@@ -19,6 +19,12 @@
                 <input-yes-no-checkbox v-model="field.settings['data-clear-if-not-match']" :listItem="{label: 'Clear if not match', help_text: 'Clear value if not match the mask' }"></input-yes-no-checkbox>
             </template>
 
+            <template v-if="childFields.indexOf('layout_class_list') != -1">
+                <customSelect :listItem="{label: 'Layout', options: field.settings.layout_class_list}" v-model="field.settings.layout_class"></customSelect>
+                <input-yes-no-checkbox v-model="field.settings.randomize_options" :listItem="{label: 'Shuffle the available options', help_text: 'If you enable this then the checkable options will be shuffled' }"></input-yes-no-checkbox>
+                <inputDefaultValue v-model="field.settings.dynamic_default_value" :listItem="{label: 'Dynamic Default Value', help_text: 'If you would like to pre-populate the value of a field, enter it here.'}" :editItem="field"></inputDefaultValue>
+            </template>
+
             <advanced-options
                     class="ff_full_width_child"
                     v-if="childFields.indexOf('advanced_options') != -1 ||field.settings.advanced_options  != undefined "
@@ -58,7 +64,7 @@ export default {
                     'value',
                     'placeholder',
                     'help_message',
-                    'maxlength',
+                    'maxlength'
                 ]
             }
         }
