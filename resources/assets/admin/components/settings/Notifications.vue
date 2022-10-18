@@ -645,8 +645,7 @@ export default {
             }
 
             this.selected = freshCopy;
-            this.selectedIndex = index + 1;
-	        this.notifications.splice(index + 1, 0, freshCopy);
+            this.selectedIndex = this.notifications.length + 1;
         },
         edit(index) {
             let notification = this.notifications[index];
