@@ -6,14 +6,14 @@
             <elLabel v-if="isMultiCol" slot="label"
                      :label="field.settings.label">
             </elLabel>
-            <el-input v-if="field.element != 'select' && field.element != 'input_radio'"
+            <el-input v-if="field.element != 'select' && field.element != 'input_radio' && field.element != 'input_checkbox'"
                       :value="field.attributes.value"
                       :placeholder="field.attributes.placeholder">
             </el-input>
             <div v-else-if="field.element == 'select'">
                 <el-select :placeholder="field.attributes.placeholder"></el-select>
             </div>
-            <div v-else-if="field.element == 'input_radio'">
+            <div v-else-if="field.element == 'input_radio' || field.element == 'input_checkbox'">
                 <input-checkable :item="field"></input-checkable>
             </div>
         </el-form-item>

@@ -32,7 +32,7 @@
                 <div v-if="field.element == 'input_mask'">
                     <fieldOptionSettings :field="field" :child-fields="inputMaskChildFields"></fieldOptionSettings>
                 </div>
-                <div v-if="field.element == 'input_radio'">
+                <div v-if="field.element == 'input_radio' || field.element == 'input_checkbox'">
                     <fieldOptionSettings :field="field" :child-fields="inputRadioChildFields"></fieldOptionSettings>
                 </div>
                 <template v-else>
@@ -66,7 +66,8 @@
                     'input_number': 'Numeric Field',
                     'select': 'Select Field',
                     'input_mask': 'Input Mask Field',
-                    'input_radio': 'Radio Field'
+                    'input_radio': 'Radio Field',
+                    'input_checkbox': 'Checkbox Field'
                 },
                 elementMaps: {
                     input_text: 'text',
@@ -74,7 +75,8 @@
                     input_number: 'number',
                     select: 'select',
                     input_mask: 'text',
-                    input_radio: 'radio'
+                    input_radio: 'radio',
+                    input_checkbox: 'checkbox'
                 },
                 inputChildFields: ['label', 'value', 'placeholder'],
                 selectChildFields: ['label', 'placeholder', 'advanced_options'],
@@ -167,7 +169,7 @@
                     ];
                 }
 
-                if (element == 'input_radio') {
+                if (element == 'input_radio' || element == 'input_checkbox') {
                     item.settings.dynamic_default_value = '';
                     item.settings.layout_class_list = [
                         {
@@ -219,6 +221,10 @@
                             value: 'Option 2'
                         }
                     ];
+                }
+
+                if (element == 'input_checkbox') {
+                    item.attributes.value = [];
                 }
 
                 return item;

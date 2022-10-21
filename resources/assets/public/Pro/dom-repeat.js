@@ -105,6 +105,21 @@ const registerRepeaterHandler = function ($theForm) {
 
         $freshCopy.find('td').each(function (i, td) {
             var el = jQuery(this).find('.ff-el-form-control:last-child');
+
+            if (el.length == 0) {
+                var checkEl = jQuery(this).find('.ff-el-form-check');
+                checkEl.each(function (j, check) {
+                    check = jQuery(check);
+                    var getUniqueId = 'repeater_field0_' + uniqid(Math.floor((Math.random() * 10) + 1));
+                    check.find('label').attr('for', getUniqueId);
+                    var radio = check.find('input');
+                    radio.attr('id', getUniqueId);
+                    if (radio.is(':checked')) {
+                        radio.prop('checked', false);
+                    }
+                });
+            }
+
             var tabIndex = el.attr('tabindex');
 
             var dataMask = el.attr('data-mask');
@@ -148,7 +163,26 @@ const registerRepeaterHandler = function ($theForm) {
                     $el.attr('tabindex',  firstTabIndex);
                 }
             });
+
+           jQuery(this).find('.ff-el-form-check').parent().each(function(index, el) {
+               var checkEl = jQuery(el).find('input[type="checkbox"]');
+               checkEl.attr('data-name',  rootName+'_'+index+'_'+i);
+               if(firstTabIndex) {
+                   checkEl.attr('tabindex',  firstTabIndex);
+               }
+               checkEl.attr('name', `repeater_field[${i}][${index}][]`);
+
+               var radioEl = jQuery(el).find('input[type="radio"]');
+               radioEl.attr('name', `repeater_field[${i}][${index}]`);
+               radioEl.attr('data-name',  rootName+'_'+index+'_'+i);
+               if(firstTabIndex) {
+                   radioEl.attr('tabindex',  firstTabIndex);
+               }
+               radioEl.attr('name', `repeater_field[${i}][${index}][]`);
+           });
         });
+
+        $freshCopy.find('.ff-el-form-check').removeClass('ff_item_selected');
 
         $freshCopy.find('.ff-el-form-control')[0].focus();
 
@@ -190,6 +224,12 @@ const registerRepeaterHandler = function ($theForm) {
 const initRepeater = function($theForm) {
     registerRepeaterButtonsOldVersion($theForm);
     registerRepeaterHandler($theForm);
+};
+
+const uniqid = function(prefix = "", random = false) {
+    const sec = Date.now() * 1000 + Math.random() * 1000;
+    const id = sec.toString(16).replace(/\./g, "").padEnd(14, "0");
+    return `${prefix}${id}${random ? `.${Math.trunc(Math.random() * 1000000000)}`:""}`;
 };
 
 export {initRepeatButtons, initRepeater};
