@@ -81,7 +81,7 @@
                 inputChildFields: ['label', 'value', 'placeholder'],
                 selectChildFields: ['label', 'placeholder', 'advanced_options'],
                 inputMaskChildFields: ['label', 'value', 'placeholder', 'temp_mask', 'data-mask', 'data-mask-reverse', 'temp_mask_list'],
-                inputRadioChildFields: ['label', 'dynamic_default_value', 'display_type', 'layout_class', 'layout_class_list', 'randomize_options', 'advanced_options']
+                inputRadioChildFields: ['label', 'dynamic_default_value', 'display_type', 'layout_class', 'layout_class_list', 'randomize_options', 'advanced_options', 'container_class']
             }
         },
         methods: {
@@ -171,6 +171,7 @@
 
                 if (element == 'input_radio' || element == 'input_checkbox') {
                     item.settings.dynamic_default_value = '';
+                    item.settings.container_class = '';
                     item.settings.layout_class_list = [
                         {
                             image: '',
