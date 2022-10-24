@@ -3,7 +3,7 @@
     <elLabel slot="label" :label="item.settings.label"></elLabel>
     <div class="repeat-field--item">
         <el-form-item v-for="(field, key, i) in item.fields" :key="i" :class="{ 'is-required' : field.settings.validation_rules.required.value }">
-            <elLabel v-if="isMultiCol" slot="label"
+            <elLabel v-if="isMultiCol && field.element != 'input_radio' && field.element != 'input_checkbox'" slot="label"
                      :label="field.settings.label">
             </elLabel>
             <el-input v-if="field.element != 'select' && field.element != 'input_radio' && field.element != 'input_checkbox'"

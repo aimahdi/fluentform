@@ -35,9 +35,9 @@
                 <div v-if="field.element == 'input_radio' || field.element == 'input_checkbox'">
                     <fieldOptionSettings :field="field" :child-fields="inputRadioChildFields"></fieldOptionSettings>
                 </div>
-                <template v-else>
+                <div v-if="field.element == 'input_text' || field.element == 'input_email' || field.element == 'input_number'">
                     <fieldOptionSettings :child-fields="inputChildFields" :field="field"></fieldOptionSettings>
-                </template>
+                </div>
             </div>
 
         </div>
