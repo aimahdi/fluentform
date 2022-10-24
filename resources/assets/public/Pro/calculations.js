@@ -119,7 +119,7 @@ export default function ($, $theForm) {
                         } else if (prefix === '{payment.') {
                             value = getPaymentFieldValue(name);
                         } else {
-                            let $el = $theForm.find('input[name=' + name + ']');
+                            let $el = $theForm.find('input[name="' + name + '"]');
                             if (isAccessible($el)) {
                                 value = window.ff_helper.numericVal($el);
                             }
@@ -218,7 +218,7 @@ export default function ($, $theForm) {
             name = splits[0];
             indexName = splits[1];
         }
-        let $targetTable = $theForm.find('table[data-root_name=' + name + ']');
+        let $targetTable = $theForm.find('table[data-root_name="' + name + '"]');
         if (!repeaterTriggerCache[name]) {
             repeaterTriggerCache[name] = true;
             $targetTable.on('repeat_change', () => {
@@ -242,7 +242,12 @@ export default function ($, $theForm) {
                     let parsedValue = 0;
                     if ($tdInput.attr('type') === 'select') {
                         parsedValue = parseFloat($tdInput.find('option:selected').attr('data-calc_value'));
-                    } else {
+                    } else if ($tdInput.attr('type') === 'radio') {
+                        parsedValue = parseFloat(getRadioFieldValue($tdInput.attr('name')));
+                    } else if ($tdInput.attr('type') === 'checkbox') {
+                        parsedValue = parseFloat(getCheckboxValue($tdInput.attr('data-name')));
+                    }
+                    else {
                         parsedValue = parseFloat($tdInput.val());
                     }
                     if(!isNaN(parsedValue)) {
@@ -259,7 +264,7 @@ export default function ($, $theForm) {
     
     function getPaymentFieldValue(name) {
         let value= 0;
-        let $elem = $theForm.find(':input[data-name=' + name + ']');
+        let $elem = $theForm.find(':input[data-name="' + name + '"]');
         if ($elem.length && isAccessible($elem)) {
             let elementType = $elem[0].type;
             if (elementType === 'radio') {
@@ -278,8 +283,8 @@ export default function ($, $theForm) {
     }
     
     function getRadioFieldValue(name , forPaymentField = false) {
-        let value =0;
-        let $el = $theForm.find('input[name=' + name + ']:checked');
+        let value = 0;
+        let $el = $theForm.find('input[name="' + name + '"]:checked');
         if (forPaymentField) {
             return $el.attr('data-payment_value');
         }
@@ -292,18 +297,18 @@ export default function ($, $theForm) {
     function getSelectFieldValue(name, forPaymentField = false) {
         let value = 0;
         if (forPaymentField) {
-            return $theForm.find('select[name=' + name + '] option:selected').data('payment_value');
+            return $theForm.find('select[name="' + name + '"] option:selected').data('payment_value');
         }
-        value = getDataCalcValue('select[data-name=' + name + '] option:selected');
-        $theForm.find('select[data-name=' + name + ']').attr('data-calc_value', value);
+        value = getDataCalcValue('select[data-name="' + name + '"] option:selected');
+        $theForm.find('select[data-name="' + name + '"]').attr('data-calc_value', value);
         return value;
     }
     
     function getCheckboxValue(name, forPaymentField = false) {
         if (!forPaymentField) {
-            return getDataCalcValue('input[data-name=' + name + ']:checked');
+            return getDataCalcValue('input[data-name="' + name + '"]:checked');
         }
-        let $elem = $theForm.find(':input[data-name=' + name + ']');
+        let $elem = $theForm.find(':input[data-name="' + name + '"]');
         let groupId = $elem.data('group_id');
         let groups = $theForm.find('input[data-group_id="' + groupId + '"]:checked');
         let groupTotal = 0;

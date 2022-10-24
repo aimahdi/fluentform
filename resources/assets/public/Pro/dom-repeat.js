@@ -151,24 +151,29 @@ const registerRepeaterHandler = function ($theForm) {
         $table.find('tbody tr').each(function (i, tr) {
             jQuery(tr).find('td').each(function (j, td) {
                 jQuery(this).find('.ff-el-form-control').parent().each(function (index, el) {
-                    var inputEl = jQuery(el).find('input[type="text"]');
+                    var inputEl = jQuery(el).find('input');
+
+                    if (!inputEl.length) {
+                        inputEl = jQuery(el).find('select');
+                    }
+
                     inputEl.attr('name', rootName + '[' + i + '][' + j + ']');
                     if (firstTabIndex) {
                         inputEl.attr('tabindex', firstTabIndex);
                     }
-                    inputEl.attr('data-name', rootName + '_' + i + '_' + index);
+                    inputEl.attr('data-name', rootName + '_' + index + '_' + i);
                 });
 
                 jQuery(this).find('.ff-el-form-check').parent().each(function (index, el) {
                     var checkEl = jQuery(el).find('input[type="checkbox"]');
-                    checkEl.attr('data-name', rootName + '_' + i + '_' + j);
+                    checkEl.attr('data-name', rootName + '_' + j + '_' + i);
                     if (firstTabIndex) {
                         checkEl.attr('tabindex', firstTabIndex);
                     }
                     checkEl.attr('name', `repeater_field[${ i }][${ j }][]`);
 
                     var radioEl = jQuery(el).find('input[type="radio"]');
-                    radioEl.attr('data-name', rootName + '_' + i + '_' + j);
+                    radioEl.attr('data-name', rootName + '_' + j + '_' + i);
                     if (firstTabIndex) {
                         radioEl.attr('tabindex', firstTabIndex);
                     }
