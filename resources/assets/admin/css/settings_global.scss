@@ -883,3 +883,38 @@ ul.fcc_inline_social {
     }
 }
 
+.landing-page-settings {
+    min-height: 100px;
+
+    .ff_iconed_radios {
+        >label {
+            margin-right: 10px;
+        }
+    }
+
+    .ff_landing_full_screen {
+        margin-left: 10px;
+        font-size: 20px;
+    }
+
+    // .ff_landing_page_body .ff_landing_layout_media_left_full, .ff_landing_page_body .ff_landing_layout_media_right_full {
+    //     height: 100% !important;
+    //     flex-direction: row !important;
+    // }
+}
+
+body.ff_full_screen .ff_settings_container {
+    background: #fff;
+    color: #444;
+    z-index: 100099 !important;
+    position: fixed;
+    overflow: hidden;
+    top: 0;
+    bottom: 0;
+    left: 0 !important;
+    right: 0 !important;
+    height: 100%;
+    min-width: 0;
+    cursor: default;
+    margin: 0 !important;
+}

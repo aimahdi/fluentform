@@ -1,8 +1,8 @@
 <template>
-    <div v-loading="loading" :element-loading-text="$t('Loading Settings...')" style="min-height: 100px;">
+    <div v-loading="loading" :element-loading-text="$t('Loading Settings...')" class="landing-page-settings">
 
         <el-row class="setting_header">
-            <el-col :md="16">
+            <el-col :md="14">
                 <h2>{{ $t('Landing Page') }}</h2>
                 <p v-if="settings.status != 'yes'">{{ ('Create completely custom "distraction-free" form landing pages to boost conversions') }}</p>
                 <el-checkbox style="margin-bottom: 15px;" v-model="settings.status" true-label="yes" false-label="no">
@@ -10,7 +10,14 @@
                 </el-checkbox>
             </el-col>
             <!--Save settings-->
-            <el-col v-if="!error_text" :md="8" class="action-buttons clearfix mb15">
+            <el-col v-if="!error_text" :md="10" class="action-buttons clearfix mb15">
+                <a v-show="share_url && settings.status == 'yes'" 
+                    class="ff_landing_full_screen el-button pull-right el-button--mini"
+                    @click="fullScreen"
+                >
+                    <i class="el-icon-full-screen"></i>
+                </a>
+
                 <el-button
                         :loading="saving"
                         class="pull-right"
@@ -330,11 +337,39 @@
                     .replace(/[^\w\-]+/g, '')       // Remove all non-word chars
                     .replace(/\-\-+/g, '-');        // Replace multiple - with single -
 
+            },
+            fullScreen() {
+                const $body = jQuery('body');
+                let wasFullScreen = $body.hasClass('ff_full_screen');
+                if (window.localStorage) {
+                    if (wasFullScreen) {
+                        window.localStorage.setItem('ff_landing_is_full_screen', 'no');
+                    } else {
+                        window.localStorage.setItem('ff_landing_is_full_screen', 'yes');
+                    }
+                }
+                $body.toggleClass('ff_full_screen');
+
+                // if (window.localStorage) {
+                //     if (window.localStorage.getItem('ff_landing_is_full_screen') == 'yes') {
+                //         jQuery('body').addClass('ff_full_screen').addClass('folded');
+                //     }
+                // } else {
+                //     jQuery('body').addClass('ff_full_screen').addClass('folded');
+                // }
             }
         },
         mounted() {
             this.fetchSettings();
             jQuery('head title').text('Landing Page Settings - Fluent Forms');
+            
+            if (window.localStorage) {
+                if (window.localStorage.getItem('ff_landing_is_full_screen') == 'yes') {
+                    jQuery('body').addClass('ff_full_screen').addClass('folded');
+                }
+            } else {
+                jQuery('body').addClass('ff_full_screen').addClass('folded');
+            }
         }
     };
 </script>

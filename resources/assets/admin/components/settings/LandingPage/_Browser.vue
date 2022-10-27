@@ -56,10 +56,14 @@
                     id: 'fcc_design_preview',
                     src: this.preview_url,
                     style: 'display:none;width:100%;height:600px',
+                    class: 'landing-page-settings',
                     load: function () {
                         const frame = jQuery(this);
                         frame.show();
                         //  that.generateCss(that.design_settings);
+                        const css = `@media screen and (max-width: 1023px) { .ff_landing_page_body .ff_landing_layout_media_right, .ff_landing_layout_media_left {align-items: center; overflow: hidden; flex-direction: row; height: 100%;}} @media screen and (max-width: 600px) { .ff_landing_page_body .ff_landing_layout_media_right, .ff_landing_layout_media_left {padding: 0; height: auto; align-items: flex-start; flex-direction: column-reverse;}}`;
+
+                        that.pushCSS(css);
                         that.loading_iframe = false;
                     }
                 });
@@ -96,7 +100,7 @@
             },
             pushCSS(css) {
                 if (this.iframe) {
-                    this.iframe.contents().find('head').find('#ff_landing_css').html(css);
+                    this.iframe.contents().find('head').find('#ff_landing_page_settings').html(css);
                 }
             }
         },
