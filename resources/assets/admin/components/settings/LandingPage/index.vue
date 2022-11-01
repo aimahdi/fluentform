@@ -5,7 +5,7 @@
             <el-col :md="14">
                 <h2>{{ $t('Landing Page') }}</h2>
                 <p v-if="settings.status != 'yes'">{{ ('Create completely custom "distraction-free" form landing pages to boost conversions') }}</p>
-                <el-checkbox style="margin-bottom: 15px;" v-model="settings.status" true-label="yes" false-label="no">
+                <el-checkbox style="margin-bottom: 15px;" v-model="settings.status" true-label="yes" @change="offFullScreen" false-label="no">
                     {{ $t('Enable Form Landing Page Mode') }}
                 </el-checkbox>
             </el-col>
@@ -261,6 +261,9 @@
             'settings.layout': function (){
                 this.saveSettings(true);
             },
+            'settings.media': function (){
+                this.saveSettings(true);
+            },
             'settings.background_image': function (){
                 this.saveSettings(true);
             }
@@ -349,14 +352,14 @@
                     }
                 }
                 $body.toggleClass('ff_full_screen');
-
-                // if (window.localStorage) {
-                //     if (window.localStorage.getItem('ff_landing_is_full_screen') == 'yes') {
-                //         jQuery('body').addClass('ff_full_screen').addClass('folded');
-                //     }
-                // } else {
-                //     jQuery('body').addClass('ff_full_screen').addClass('folded');
-                // }
+            },
+            offFullScreen(status) {
+                if (status !== 'yes') {
+                    jQuery('body').removeClass('ff_full_screen');
+                    if (window.localStorage) {
+                        window.localStorage.setItem('ff_landing_is_full_screen', 'no');
+                    }
+                }
             }
         },
         mounted() {

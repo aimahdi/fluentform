@@ -41,11 +41,40 @@
             }
         },
         watch: {
-            settings: {
-                handler(settings) {
-                    this.generateCss(settings);
-                },
-                deep: true
+            'settings.brightness': {
+                handler(brightness) {
+                    this.brightness(brightness);
+                }
+            },
+            'settings.custom_color': {
+                handler(color) {
+                    this.backgroundColor(color);
+                }
+            },
+            'settings.media_x_position': {
+                handler(x_position) {
+                    this.imagePositionCSS(x_position, this.settings.media_y_position);
+                }
+            },
+            'settings.media_y_position': {
+                handler(y_position) {
+                    this.imagePositionCSS(this.settings.media_x_position, y_position);
+                }
+            },
+            'settings.title': {
+                handler(title) {
+                    this.setHeaderTitle(title);
+                }
+            },
+            'settings.description': {
+                handler(description) {
+                    this.setHeaderDescription(description);
+                }
+            },
+            'settings.logo': {
+                handler(logo) {
+                    this.setHeaderLogo(logo);
+                }
             }
         },
         props: ['settings', 'preview_url'],
@@ -60,47 +89,83 @@
                     load: function () {
                         const frame = jQuery(this);
                         frame.show();
-                        //  that.generateCss(that.design_settings);
-                        const css = `@media screen and (max-width: 1023px) { .ff_landing_page_body .ff_landing_layout_media_right, .ff_landing_layout_media_left {align-items: center; overflow: hidden; flex-direction: row; height: 100%;}} @media screen and (max-width: 600px) { .ff_landing_page_body .ff_landing_layout_media_right, .ff_landing_layout_media_left {padding: 0; height: auto; align-items: flex-start; flex-direction: column-reverse;}}`;
-
-                        that.pushCSS(css);
+                        that.iframe?.contents().find("body").addClass('landing-page-settings-iframe');
                         that.loading_iframe = false;
                     }
                 });
 
                 jQuery('#fcc_iframe_holder').html(this.iframe);
             },
-            generateCss(settings) {
-                let css = '';
-                let prefix = '.ff_landing_wrapper';
-                css += `.ff_landing_page_body { background-color: ${settings.custom_color} !important; }`;
-                css += this.brightness(settings);
-                css += this.imagePositionCSS(settings);
-
-                this.pushCSS(css);
+            backgroundColor(color) {
+                this.iframe?.contents().find(".ff_landing_page_body").attr('style',`background-color: ${color} !important;`);
             },
-            brightness(settings) {
-                const setValue = settings.brightness;
-                if (!setValue) {
+            brightness(brightness) {
+                if (!brightness) {
                     return '';
                 }
                 let css = '';
-                if (setValue > 0) {
-                    css += 'contrast(' + ((100 - setValue) / 100).toFixed(2) + ') ';
+                if (brightness > 0) {
+                    css += 'contrast(' + ((100 - brightness) / 100).toFixed(2) + ') ';
                 }
-                css += 'brightness(' + (1 + settings.brightness / 100) + ')';
-                return `.ff_conv_media_holder .fcc_block_media_attachment {filter: ${css}!important;})`;
+                css += 'brightness(' + (1 + brightness / 100) + ')';
+                this.iframe?.contents().find(".fcc_block_media_attachment").attr('style',`filter:${css} !important;`);
+            },
+            imagePositionCSS(media_x_position, media_y_position) {
+                if (this.settings.layout === 'media_right_full' || this.settings.layout === 'media_left_full') {
+                    this.iframe?.contents().find(".ff_landing_media_holder .fc_image_holder img").attr('style',`object-position: ${media_x_position}% ${media_y_position}%!important;`);
+                }
+            },
+            setHeaderTitle(title) {
+                const $body = this.iframe?.contents().find('body');
+                if (!title) {
+                    $body.find('.ff_landing_form .ff_landing_header h1').remove();
+                    return;
+                }
+                if (!$body.find('.ff_landing_form .ff_landing_header').length) {
+                    $body.find('.ff_landing_form').prepend(`<div class='ff_landing_header'><h1>${title}</h1></div>`);
+                } else {
+                    if (!$body.find('.ff_landing_form .ff_landing_header h1').length) {
+                        if ($body.find('.ff_landing_form .ff_landing_header .ff_landing_desc').length) {
+                            $body.find('.ff_landing_form .ff_landing_header .ff_landing_desc').before(`<h1>${title}</h1>`);
+                        } else {
+                            $body.find('.ff_landing_form .ff_landing_header').append(`<h1>${title}</h1>`);
+                        }
+                    } else {
+                        $body.find('.ff_landing_form .ff_landing_header h1').text(title);
+                    }
+                }
+            },
+            setHeaderDescription(html) {
+                const $body = this.iframe?.contents().find('body');
+                if (!html) {
+                    $body.find('.ff_landing_form .ff_landing_header .ff_landing_desc').remove();
+                    return;
+                }
+                if (!$body.find('.ff_landing_form .ff_landing_header').length) {
+                    $body.find('.ff_landing_form').prepend(`<div class='ff_landing_header'><div class="ff_landing_desc">${html}</div></div>`);
+                } else {
+                    if (!$body.find('.ff_landing_form .ff_landing_header .ff_landing_desc').length) {
+                        $body.find('.ff_landing_form .ff_landing_header').append(`<div class="ff_landing_desc">${html}</div>`);
+                    } else {
+                        $body.find('.ff_landing_form .ff_landing_header .ff_landing_desc').html(html);
+                    }
+                }
+            },
+            setHeaderLogo(logo) {
+                const $body = this.iframe?.contents().find('body');
+                if (!logo) {
+                    $body.find('.ff_landing_form .ff_landing_header .ff_landing-custom-logo').remove();
+                    return;
+                }
+                if (!$body.find('.ff_landing_form .ff_landing_header').length) {
+                    $body.find('.ff_landing_form').prepend(`<div class='ff_landing_header'><div class="ff_landing-custom-logo"><img src="${logo}" alt="Form Logo"></div></div>`);
+                } else {
+                    if (!$body.find('.ff_landing_form .ff_landing_header .ff_landing-custom-logo').length) {
+                        $body.find('.ff_landing_form .ff_landing_header').prepend(`<div class="ff_landing-custom-logo"><img src="${logo}" alt="Form Logo"></div>`);
+                    } else {
+                        $body.find('.ff_landing_form .ff_landing_header .ff_landing-custom-logo img').attr('src', logo);
+                    }
 
-            },
-            imagePositionCSS(settings) {
-                if (settings.layout == 'media_right_full' || settings.layout == 'media_left_full') {
-                    return `.ff_conv_media_holder .fc_image_holder img {object-position: ${settings.media_x_position}% ${settings.media_y_position}%!important;}`;
-                }
-                return '';
-            },
-            pushCSS(css) {
-                if (this.iframe) {
-                    this.iframe.contents().find('head').find('#ff_landing_page_settings').html(css);
                 }
             }
         },
