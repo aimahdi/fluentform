@@ -170,21 +170,23 @@ const registerRepeaterHandler = function ($theForm) {
                     if (firstTabIndex) {
                         checkEl.attr('tabindex', firstTabIndex);
                     }
-                    checkEl.attr('name', `repeater_field[${ i }][${ j }][]`);
+                    checkEl.attr('name', `${rootName}[${ i }][${ j }][]`);
 
                     var radioEl = jQuery(el).find('input[type="radio"]');
                     radioEl.attr('data-name', rootName + '_' + j + '_' + i);
                     if (firstTabIndex) {
                         radioEl.attr('tabindex', firstTabIndex);
                     }
-                    radioEl.attr('name', `repeater_field[${ i }][${ j }]`);
+                    radioEl.attr('name', `${rootName}[${ i }][${ j }]`);
                 });
             })
         });
 
         $freshCopy.find('.ff-el-form-check').removeClass('ff_item_selected');
 
-        $freshCopy.find('.ff-el-form-control')[0].focus();
+        if ($freshCopy.find('.ff-el-form-control').length) {
+            $freshCopy.find('.ff-el-form-control')[0].focus();
+        }
 
         $table.trigger('repeat_change');
 
