@@ -1,0 +1,137 @@
+diff --git a/app/Helpers/Helper.php b/app/Helpers/Helper.php
+index 9762373..07d438c 100644
+--- a/app/Helpers/Helper.php
++++ b/app/Helpers/Helper.php
+@@ -299,6 +299,7 @@ class Helper
+             'fluent_forms_docs',
+             'fluent_forms_payment_entries',
+             'fluent_forms_smtp',
++            'fluent_forms_dashboard'
+         ];
+ 
+         $status = true;
+diff --git a/app/Modules/Registerer/Menu.php b/app/Modules/Registerer/Menu.php
+index 6aacd57..2c63458 100644
+--- a/app/Modules/Registerer/Menu.php
++++ b/app/Modules/Registerer/Menu.php
+@@ -176,6 +176,13 @@ class Menu
+             FLUENTFORM_VERSION,
+             true
+         );
++        wp_register_script(
++            'fluentform_dashboard',
++            $app->publicUrl('js/fluentform_dashboard.js'),
++            ['jquery', 'fluentform_chart_js', 'fluentform_vue_chart_js'],
++            FLUENTFORM_VERSION,
++            true
++        );
+ 
+         wp_register_script(
+             'fluentform_chart_js',
+@@ -233,6 +240,7 @@ class Menu
+ 
+     public function enqueuePageScripts()
+     {
++    
+         if (!$this->isFluentPages()) {
+             return;
+         }
+@@ -289,7 +297,11 @@ class Menu
+             wp_enqueue_style('fluentform-add-ons');
+         } elseif ('fluent_forms_docs' == $page || 'fluent_forms_smtp' == $page) {
+             wp_enqueue_style('fluentform_doc_style');
++        } elseif ('fluent_forms_dashboard' == $page) {
++            wp_enqueue_style('fluentform_settings_global');
++            wp_enqueue_script('fluentform_dashboard');
+         }
++    
+     }
+ 
+     /**
+@@ -344,7 +356,17 @@ class Menu
+             $this->getMenuIcon(),
+             $menuPriority
+         );
+-
++    
++        add_submenu_page(
++            'fluent_forms',
++            __('FluentForm Dashboard', 'fluentform'),
++            __('Dashboard', 'fluentform'),
++            $dashBoardCapability,
++            'fluent_forms_dashboard',
++            [$this, 'renderDashboard']
++        );
++        remove_submenu_page('fluent_forms', 'fluent_forms');
++    
+         add_submenu_page(
+             'fluent_forms',
+             __('All Forms', 'fluentform'),
+@@ -455,6 +477,45 @@ class Menu
+     {
+         return 'data:image/svg+xml;base64,' . base64_encode('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><defs><style>.cls-1{fill:#fff;}</style></defs><title>dashboard_icon</title><g id="Layer_2" data-name="Layer 2"><g id="Layer_1-2" data-name="Layer 1"><path class="cls-1" d="M15.57,0H4.43A4.43,4.43,0,0,0,0,4.43V15.57A4.43,4.43,0,0,0,4.43,20H15.57A4.43,4.43,0,0,0,20,15.57V4.43A4.43,4.43,0,0,0,15.57,0ZM12.82,14a2.36,2.36,0,0,1-1.66.68H6.5A2.31,2.31,0,0,1,7.18,13a2.36,2.36,0,0,1,1.66-.68l4.66,0A2.34,2.34,0,0,1,12.82,14Zm3.3-3.46a2.36,2.36,0,0,1-1.66.68H3.21a2.25,2.25,0,0,1,.68-1.64,2.36,2.36,0,0,1,1.66-.68H16.79A2.25,2.25,0,0,1,16.12,10.53Zm0-3.73a2.36,2.36,0,0,1-1.66.68H3.21a2.25,2.25,0,0,1,.68-1.64,2.36,2.36,0,0,1,1.66-.68H16.79A2.25,2.25,0,0,1,16.12,6.81Z"/></g></g></svg>');
+     }
++    
++    public function renderDashboard()
++    {
++        wp_localize_script('fluentform_dashboard', 'FluentFormDashboard', [
++            'plugin'               => $this->app->getSlug(),
++            'hasPro'               => defined('FLUENTFORMPRO'),
++            'hasPDF'               => defined('FLUENTFORM_PDF_VERSION'),
++            'hasFluentCRM'         => defined('FLUENTCRM'),
++            'upgrade_url'          => fluentform_upgrade_url(),
++            'ace_path_url'         => $this->app->publicUrl('libs/ace'),
++            'has_fluent_smtp'      => defined('FLUENTMAIL'),
++            'fluent_smtp_url'      => admin_url('admin.php?page=fluent_forms_smtp'),
++            'form_settings_str'    => [],
++            'entry_statuses'      => Helper::getEntryStatuses(112),
++            'all_forms_url'       => admin_url('admin.php?page=fluent_forms'),
++
++
++        ]);
++//        $fluentFormEntriesVars = apply_filters('fluent_form_entries_vars', [
++//            'all_forms_url'       => admin_url('admin.php?page=fluent_forms'),
++//            'forms'               => $forms,
++//            'form_id'             => $form->id,
++//            'enabled_auto_delete' => Helper::isEntryAutoDeleteEnabled($form_id),
++//            'current_form_title'  => $form->title,
++//            'entry_statuses'      => Helper::getEntryStatuses($form_id),
++//            'entries_url_base'    => admin_url('admin.php?page=fluent_forms&route=entries&form_id='),
++//            'no_found_text'       => __('Sorry! No entries found. All your entries will be shown here once you start getting form submissions', 'fluentform'),
++//            'has_pro'             => defined('FLUENTFORMPRO'),
++//            'printStyles'         => [fluentformMix('css/settings_global.css')],
++//            'email_notifications' => $formattedNotification,
++//            'available_countries' => $app->load(
++//                $app->appPath('Services/FormBuilder/CountryNames.php')
++//            ),
++//            'upgrade_url'      => fluentform_upgrade_url(),
++//            'form_entries_str' => TranslationString::getEntriesI18n(),
++//        ], $form);
++    
++        View::render('admin.dashboard');
++    }
+ 
+     public function renderFormAdminRoute()
+     {
+@@ -904,6 +965,7 @@ class Menu
+             'fluent_forms_add_ons',
+             'fluent_forms_docs',
+             'fluent_forms_smtp',
++            'fluent_forms_dashboard',
+         ];
+ 
+         $page = sanitize_text_field($this->app->request->get('page'));
+diff --git a/webpack.mix.js b/webpack.mix.js
+index 18165d9..ca3e983 100644
+--- a/webpack.mix.js
++++ b/webpack.mix.js
+@@ -45,7 +45,8 @@ mix
+     .js('resources/assets/admin/modules.js', `public/js/modules.js`)
+     .js('resources/assets/admin/AllEntries/all-entries.js', `public/js/all_entries.js`)
+     .js('resources/assets/admin/conversion_templates/conversational_design.js', `public/js/conversational_design.js`)
+-    .vue({ 
++    .js('resources/assets/admin/Dashboard/fluentform_dashboard.js', `public/js/fluentform_dashboard.js`)
++    .vue({
+         version: 2,
+         extractStyles: true
+     })

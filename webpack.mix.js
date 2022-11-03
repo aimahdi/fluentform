@@ -45,7 +45,8 @@ mix
     .js('resources/assets/admin/modules.js', `public/js/modules.js`)
     .js('resources/assets/admin/AllEntries/all-entries.js', `public/js/all_entries.js`)
     .js('resources/assets/admin/conversion_templates/conversational_design.js', `public/js/conversational_design.js`)
-    .vue({ 
+    .js('resources/assets/admin/Dashboard/fluentform_dashboard.js', `public/js/fluentform_dashboard.js`)
+    .vue({
         version: 2,
         extractStyles: true
     })
