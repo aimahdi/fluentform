@@ -270,7 +270,7 @@ export default function ($, $form, form, fluentFormVars, formSelector) {
         ctx.font = "13px Arial";
         ctx.fillStyle = "white";
         ctx.textAlign = "center";
-        ctx.fillText(file.type.substr(file.type.indexOf('/') + 1), 30, 30, 60);
+        ctx.fillText(file.name.substr(file.name.lastIndexOf('.') + 1), 30, 30, 60);
         return canvas.toDataURL();
     };
 
