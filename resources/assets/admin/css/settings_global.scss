@@ -908,6 +908,12 @@ ul.fcc_inline_social {
 
 body.ff_full_screen {
     overflow: hidden;
+    .el-tooltip__popper {
+        z-index: 1000999 !important;
+    }
+    .el-color-dropdown {
+        z-index: 1000999 !important;
+    }
     .ff_settings_container {
         background: #fff;
         color: #444;
@@ -942,12 +948,6 @@ body.ff_full_screen {
         .ff_landing {
             overflow: hidden scroll;
             max-height: calc(95vh - 120px);
-        }
-        .el-tooltip__popper {
-            z-index: 1000999 !important;
-        }
-        .el-color-dropdown {
-            z-index: 1000999 !important;
         }
     }
 }
