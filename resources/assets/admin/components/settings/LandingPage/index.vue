@@ -1,8 +1,8 @@
 <template>
     <div v-loading="loading" :element-loading-text="$t('Loading Settings...')" class="landing-page-settings">
 
-        <el-row class="setting_header">
-            <el-col :md="14">
+        <el-row class="setting_header" type="flex" justify="space-between" align="middle">
+            <el-col :sm="12">
                 <h2>{{ $t('Landing Page') }}</h2>
                 <p v-if="settings.status != 'yes'">{{ ('Create completely custom "distraction-free" form landing pages to boost conversions') }}</p>
                 <el-checkbox style="margin-bottom: 15px;" v-model="settings.status" true-label="yes" @change="offFullScreen" false-label="no">
@@ -10,7 +10,7 @@
                 </el-checkbox>
             </el-col>
             <!--Save settings-->
-            <el-col v-if="!error_text" :md="10" class="action-buttons clearfix mb15">
+            <el-col v-if="!error_text" :sm="12" class="action-buttons clearfix ">
                 <a v-show="share_url && settings.status == 'yes'" 
                     class="ff_landing_full_screen el-button pull-right el-button--mini"
                     @click="fullScreen"
