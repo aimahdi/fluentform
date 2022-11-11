@@ -65,11 +65,9 @@ class ConditionApp {
 
     getItemEvaluateValue(item, val) {
         val = val || null;
-        
-        const isNumericField = jQuery(`[name='${item.field}']`).attr('inputmode') === 'numeric';
-
-        if (isNumericField && val) {
-            val = val.replace(/[^0-9.-]/g, '');
+        const $el = jQuery(`[name='${item.field}']`);
+        if (val && $el.hasClass('ff_numeric') && $el.attr('data-formatter')) {
+            val = this.parseFormattedNumericValue($el, val);
         }
 
         if (item.operator == '=') {
@@ -124,6 +122,18 @@ class ConditionApp {
             return RegExp(body, flags);
         }
         return new RegExp(regex, 'g');
+    }
+
+    parseFormattedNumericValue($el, val) {
+        if (typeof window !== 'undefined') {
+            return window.ff_helper.numericVal($el);
+        }
+
+        const formatConfig = JSON.parse($el.attr('data-formatter'));
+        if (formatConfig?.decimal === ',') {
+            val = val.replace(',', '.');
+        }
+        return  val.replace(/[^0-9.-]/g, '');
     }
 }
 
